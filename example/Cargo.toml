@@ -1,0 +1,13 @@
+[package]
+name = "example"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+yew = { git = "https://github.com/yewstack/yew.git", rev = "5355b65ff5f9747cbad801d4b337a5ac7a94d0f4", features = ["csr"] }
+
+# logging
+wasm-logger = "0.2.0"
+log = "0.4.17"
