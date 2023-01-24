@@ -1,14 +1,20 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
+use yew::{html, function_component, Html, Children, Properties};
+
+#[derive(Properties, PartialEq, Clone)]
+pub struct NotificationsProviderProps {
+    pub children: Children,
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+#[function_component(NotificationsProvider)]
+pub fn notifications_provider(props: &NotificationsProviderProps) -> Html {
+    let NotificationsProviderProps { children } = props.clone();
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+    html! {
+        <div>
+            {children}
+            <div>
+                // notifications will be here
+            </div>
+        </div>
     }
 }

@@ -9,3 +9,4 @@ license-file = "LICENSE"
 repository = "https://github.com/TheBestTvarynka/yew-notifications"
 
 [dependencies]
+yew = { git = "https://github.com/yewstack/yew.git", rev = "5355b65ff5f9747cbad801d4b337a5ac7a94d0f4", default-features = false }

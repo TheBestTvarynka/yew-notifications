@@ -1,10 +1,13 @@
 use yew::{function_component, html, Html};
+use yew_notifications::NotificationsProvider;
 
 #[function_component(App)]
 pub fn app() -> Html {
     html! {
         <div>
-            <span>{"example"}</span>
+            <NotificationsProvider>
+                <span>{"example"}</span>
+            </NotificationsProvider>
         </div>
     }
 }

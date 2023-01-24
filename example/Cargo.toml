@@ -7,6 +7,7 @@ edition = "2021"
 
 [dependencies]
 yew = { git = "https://github.com/yewstack/yew.git", rev = "5355b65ff5f9747cbad801d4b337a5ac7a94d0f4", features = ["csr"] }
+yew-notifications = { path = "../" }
 
 # logging
 wasm-logger = "0.2.0"
