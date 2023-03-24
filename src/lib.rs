@@ -1,7 +1,7 @@
 mod hook;
+mod manager;
 mod provider;
-mod toaster;
 
 pub use hook::use_toaster;
+pub use manager::NotificationsManager;
 pub use provider::{NotificationsProvider, NotificationsProviderProps};
-pub use toaster::NotificationsManager;

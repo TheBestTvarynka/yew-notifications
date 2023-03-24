@@ -9,17 +9,15 @@ pub struct NotificationsManager {
 
 impl NotificationsManager {
     pub fn spawn(&self, n: impl Into<String>) {
-        log::debug!("spawn in NotificationManager");
         if let Some(sender) = &self.sender {
-            log::debug!("sender is some");
-            sender.dispatch(Action::NewNotification(n.into()));
+            sender.dispatch(Action::New(n.into()));
         }
     }
 }
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Action {
-    NewNotification(String),
+    New(String),
     Close(String),
 }
 
@@ -32,19 +30,22 @@ impl Reducible for NotificationsList {
     type Action = Action;
 
     fn reduce(self: Rc<Self>, action: Self::Action) -> Rc<Self> {
-        log::debug!("in reduce: {:?}", action);
         match action {
-            Action::NewNotification(notification) => {
-                log::debug!("new notification");
-
+            Action::New(notification) => {
                 let mut notifications = self.notifications.clone();
                 notifications.push(notification);
 
                 Rc::new(Self { notifications })
             }
             Action::Close(notification) => {
-                log::info!("close {}", notification);
-                self
+                let mut notifications = self.notifications.clone();
+                if let Some(index) = notification.find(&notification) {
+                    notifications.remove(index);
+                } else {
+                    log::warn!("Got notification that doesn't exist: {:?}", notification);
+                }
+
+                Rc::new(Self { notifications })
             }
         }
     }
