@@ -12,5 +12,7 @@ repository = "https://github.com/TheBestTvarynka/yew-notifications"
 yew = { git = "https://github.com/yewstack/yew.git", rev = "5355b65ff5f9747cbad801d4b337a5ac7a94d0f4", default-features = false }
 
 # logging
-# wasm-logger = "0.2.0"
 log = "0.4.17"
+
+# utils
+time = { version = "0.3.20", features = ["local-offset", "wasm-bindgen"] }
