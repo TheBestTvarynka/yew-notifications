@@ -1,5 +1,19 @@
-use yew::{function_component, html, Html};
-use yew_notifications::NotificationsProvider;
+use yew::{function_component, html, Callback, Html};
+use yew_notifications::{use_toaster, NotificationsProvider};
+
+#[function_component(Inner)]
+fn inner() -> Html {
+    let notifications_manager = use_toaster();
+    let onclick = Callback::from(move |_| {
+        log::debug!("onclick: spawn");
+
+        notifications_manager.spawn("my new notification");
+    });
+
+    html! {
+        <button {onclick}>{"spawn"}</button>
+    }
+}
 
 #[function_component(App)]
 pub fn app() -> Html {
@@ -7,6 +21,7 @@ pub fn app() -> Html {
         <div>
             <NotificationsProvider>
                 <span>{"example"}</span>
+                <Inner />
             </NotificationsProvider>
         </div>
     }
@@ -14,6 +29,6 @@ pub fn app() -> Html {
 
 fn main() {
     wasm_logger::init(wasm_logger::Config::default());
-    
+
     yew::Renderer::<App>::new().render();
 }
