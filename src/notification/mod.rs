@@ -1,10 +1,11 @@
-use std::any::Any;
+mod component;
+pub mod component_factory;
 
+pub use component::{NotificationComponent, NotificationComponentProps};
 use time::{Duration, OffsetDateTime};
 use uuid::Uuid;
-use yew::{classes, function_component, html, Callback, Classes, Html, MouseEvent, Properties};
+use yew::{classes, Classes};
 
-use crate::utils::format_date_time;
 use crate::Notifiable;
 
 #[derive(Debug, Clone, PartialEq, Default)]
@@ -30,7 +31,7 @@ pub struct Notification {
     pub(crate) id: Uuid,
     pub(crate) notification_type: NotificationType,
     pub(crate) title: Option<String>,
-    pub(crate) description: String,
+    pub(crate) text: String,
 
     pub(crate) spawn_time: OffsetDateTime,
     pub(crate) lifetime: Duration,
@@ -45,7 +46,7 @@ impl Notification {
             id: Uuid::new_v4(),
             notification_type,
             title: Some(title.into()),
-            description: description.into(),
+            text: description.into(),
 
             spawn_time: OffsetDateTime::now_local().expect("Can not acquire local current time"),
             lifetime: Self::NOTIFICATION_LIFETIME,
@@ -58,7 +59,7 @@ impl Notification {
             id: Uuid::new_v4(),
             notification_type,
             title: None,
-            description: description.into(),
+            text: description.into(),
 
             spawn_time: OffsetDateTime::now_local().expect("Can not acquire local current time"),
             lifetime: Self::NOTIFICATION_LIFETIME,
@@ -71,7 +72,7 @@ impl Notification {
             id,
             notification_type,
             title: _,
-            description,
+            text: description,
 
             spawn_time,
             lifetime,
@@ -82,7 +83,7 @@ impl Notification {
             id,
             notification_type,
             title: Some(new_title.into()),
-            description,
+            text: description,
 
             spawn_time,
             lifetime,
@@ -95,7 +96,7 @@ impl Notification {
             id,
             notification_type: _,
             title,
-            description,
+            text: description,
 
             spawn_time,
             lifetime,
@@ -106,7 +107,7 @@ impl Notification {
             id,
             notification_type: new_notification_type,
             title,
-            description,
+            text: description,
 
             spawn_time,
             lifetime,
@@ -119,7 +120,7 @@ impl Notification {
             id,
             notification_type,
             title,
-            description: _,
+            text: _,
 
             spawn_time,
             lifetime,
@@ -130,7 +131,7 @@ impl Notification {
             id,
             notification_type,
             title,
-            description: new_description.into(),
+            text: new_description.into(),
 
             spawn_time,
             lifetime,
@@ -142,14 +143,6 @@ impl Notification {
 impl Notifiable for Notification {
     fn id(&self) -> Uuid {
         self.id
-    }
-
-    fn title(&self) -> Option<String> {
-        self.title.clone()
-    }
-
-    fn text(&self) -> String {
-        self.description.clone()
     }
 
     fn apply_tick(&mut self, time: Duration) {
@@ -169,65 +162,7 @@ impl Notifiable for Notification {
         self.lifetime = Self::NOTIFICATION_LIFETIME;
     }
 
-    fn boxed_clone(&self) -> Box<dyn Notifiable> {
-        Box::new(self.clone())
-    }
-
     fn is_paused(&self) -> bool {
         self.paused
-    }
-
-    fn compare(&self, other: &Box<dyn Any>) -> bool {
-        other
-            .downcast_ref::<Self>()
-            .map(|casted| casted == self)
-            .unwrap_or_default()
-    }
-
-    fn n_type(&self) -> &NotificationType {
-        &self.notification_type
-    }
-
-    fn creation_time(&self) -> &OffsetDateTime {
-        &self.spawn_time
-    }
-}
-
-#[derive(Properties, Clone, PartialEq, Default)]
-pub struct NotificationComponentProps<T: Notifiable + PartialEq + Clone + Default> {
-    pub notification: T,
-    pub onclick: Callback<MouseEvent>,
-    pub onenter: Callback<MouseEvent>,
-    pub onleave: Callback<MouseEvent>,
-}
-
-#[function_component(NotificationComponent)]
-pub fn notification_component<T: Notifiable + PartialEq + Clone + Default>(
-    props: &NotificationComponentProps<T>,
-) -> Html {
-    let title = props.notification.title();
-    let text = props.notification.text();
-    let notification_type = props.notification.n_type();
-    let spawn_time = props.notification.creation_time();
-
-    let onclick = props.onclick.clone();
-    let onenter = props.onenter.clone();
-    let onleave = props.onleave.clone();
-
-    let mut classes = vec![classes!("notification"), notification_type.into()];
-    if props.notification.is_paused() {
-        classes.push(classes!("paused"));
-    }
-
-    html! {
-        <div {onclick} onmouseenter={onenter} onmouseleave={onleave} class={classes}>
-            {if let Some(title) = title.as_ref() {
-                html! { <span class={classes!("notification-title")}>{title}</span> }
-            } else {
-                html! {}
-            }}
-            <span>{text}</span>
-            <span class={classes!("time")}>{format_date_time(spawn_time)}</span>
-        </div>
     }
 }

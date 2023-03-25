@@ -1,18 +1,27 @@
+use std::marker::PhantomData;
+
 use yew::{
     classes, function_component, html, use_effect_with_deps, use_reducer_eq, Callback, Children, ContextProvider, Html,
     Properties,
 };
 
 use crate::manager::{Action, NotificationsList};
-use crate::{Notifiable, NotificationComponent, NotificationsManager};
+use crate::{Notifiable, NotifiableComponentFactory, NotificationsManager};
 
-#[derive(Properties, Clone, PartialEq)]
-pub struct NotificationsProviderProps {
+#[derive(Properties, PartialEq, Clone)]
+pub struct NotificationsProviderProps<T: Notifiable + PartialEq, F: NotifiableComponentFactory<T> + PartialEq + Clone> {
     pub children: Children,
+    pub component_creator: F,
+    pub _notification: PhantomData<T>,
 }
 
 #[function_component(NotificationsProvider)]
-pub fn notifications_provider<T: Notifiable + PartialEq + Clone + Default>(props: &NotificationsProviderProps) -> Html {
+pub fn notifications_provider<
+    T: Notifiable + PartialEq + Clone + Default,
+    F: NotifiableComponentFactory<T> + PartialEq + Clone,
+>(
+    props: &NotificationsProviderProps<T, F>,
+) -> Html {
     let notifications = use_reducer_eq(NotificationsList::<T>::default);
 
     let manager = NotificationsManager {
@@ -40,6 +49,8 @@ pub fn notifications_provider<T: Notifiable + PartialEq + Clone + Default>(props
     let ns = notifications.notifications.clone();
     let children = props.children.clone();
     let dispatcher = notifications.dispatcher();
+
+    let notification_creator = &props.component_creator;
 
     html! {
         <ContextProvider<NotificationsManager<T>> context={manager}>
@@ -70,9 +81,7 @@ pub fn notifications_provider<T: Notifiable + PartialEq + Clone + Default>(props
                         })
                     };
 
-                    html!{
-                        <NotificationComponent<T> {notification} {onclick} {onenter} {onleave} />
-                    }
+                    notification_creator.component(notification, onclick, onenter, onleave)
                 })}
             </div>
         </ContextProvider<NotificationsManager<T>>>
