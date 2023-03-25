@@ -168,7 +168,11 @@ pub fn notification_component(props: &NotificationComponentProps) -> Html {
 
     html! {
         <div {onclick} onmouseenter={onenter} onmouseleave={onleave} class={classes}>
-            <span>{title.as_ref().map(|s| s.as_str()).unwrap_or_default()}</span>
+            {if let Some(title) = title.as_ref() {
+                html! { <span class={classes!("notification-title")}>{title}</span> }
+            } else {
+                html! {}
+            }}
             <span>{description}</span>
             <span class={classes!("time")}>{format_date_time(&spawn_time)}</span>
         </div>

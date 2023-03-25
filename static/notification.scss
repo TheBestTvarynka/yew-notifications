@@ -5,6 +5,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.5em;
+  font-family: 'JetBrains Mono', monospace;
+  src: url("https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Source+Code+Pro:wght@300&display=swap");
 }
 
 .notification {
@@ -20,6 +22,10 @@
 .notification > .time {
   font-size: 0.7em;
   color: #4c5159;
+}
+
+.notification > .notification-title {
+  font-weight: bold;
 }
 
 .error {
