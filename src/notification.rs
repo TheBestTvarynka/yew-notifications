@@ -1,6 +1,6 @@
 use time::OffsetDateTime;
 use uuid::Uuid;
-use yew::{function_component, html, Callback, Html, MouseEvent, Properties};
+use yew::{classes, function_component, html, Callback, Classes, Html, MouseEvent, Properties};
 
 use crate::utils::format_date_time;
 
@@ -10,6 +10,16 @@ pub enum NotificationType {
     Info,
     Warn,
     Error,
+}
+
+impl From<&NotificationType> for Classes {
+    fn from(notification_type: &NotificationType) -> Self {
+        match notification_type {
+            NotificationType::Info => classes!("info"),
+            NotificationType::Warn => classes!("warn"),
+            NotificationType::Error => classes!("error"),
+        }
+    }
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -107,7 +117,7 @@ pub struct NotificationComponentProps {
 pub fn notification_component(props: &NotificationComponentProps) -> Html {
     let Notification {
         id: _,
-        notification_type: _,
+        notification_type,
         title,
         description,
         spawn_time,
@@ -116,10 +126,10 @@ pub fn notification_component(props: &NotificationComponentProps) -> Html {
     let onclick = props.onclick.clone();
 
     html! {
-        <div {onclick}>
+        <div {onclick} class={vec![classes!("notification"), notification_type.into()]}>
             <span>{title.as_ref().map(|s| s.as_str()).unwrap_or_default()}</span>
             <span>{description}</span>
-            <span>{format_date_time(&spawn_time)}</span>
+            <span class={classes!("time")}>{format_date_time(&spawn_time)}</span>
         </div>
     }
 }

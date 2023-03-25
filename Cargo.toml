@@ -3,13 +3,13 @@ name = "yew-notifications"
 description = "Notifications components library for Yew"
 version = "0.1.0"
 edition = "2021"
-authors = ["Pavlo Myroniuk <pspos.developqkation@gmail.com>"]
+authors = ["Pavlo Myroniuk <the.best.tvarynka@gmail.com>"]
 readme = "README.md"
 license-file = "LICENSE"
 repository = "https://github.com/TheBestTvarynka/yew-notifications"
 
 [dependencies]
-yew = { git = "https://github.com/yewstack/yew.git", rev = "5355b65ff5f9747cbad801d4b337a5ac7a94d0f4", default-features = false }
+yew = { version = "0.20", default-features = false }
 
 # logging
 log = "0.4.17"
@@ -17,3 +17,5 @@ log = "0.4.17"
 # utils
 time = { version = "0.3.20", features = ["local-offset", "wasm-bindgen"] }
 uuid = { version = "1.2.1", features = ["v4", "js"] }
+
+# style

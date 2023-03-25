@@ -1,4 +1,4 @@
-use yew::{function_component, html, use_reducer_eq, Callback, Children, ContextProvider, Html, Properties};
+use yew::{classes, function_component, html, use_reducer_eq, Callback, Children, ContextProvider, Html, Properties};
 
 use crate::manager::{Action, NotificationsList};
 use crate::{NotificationComponent, NotificationsManager};
@@ -19,23 +19,26 @@ pub fn notifications_provider(props: &NotificationsProviderProps) -> Html {
     let ns = notifications.notifications.clone();
     let children = props.children.clone();
     let dispatcher = notifications.dispatcher();
+
     html! {
         <ContextProvider<NotificationsManager> context={manager}>
             {children}
-            {for ns.iter().map(|n| {
-                let dispatcher = dispatcher.clone();
+            <div class={classes!("notifications")}>
+                {for ns.iter().map(|n| {
+                    let dispatcher = dispatcher.clone();
 
-                let notification = n.clone();
-                let id = notification.id;
+                    let notification = n.clone();
+                    let id = notification.id;
 
-                let onclick = Callback::from(move |_| {
-                    dispatcher.dispatch(Action::Close(id));
-                });
+                    let onclick = Callback::from(move |_| {
+                        dispatcher.dispatch(Action::Close(id));
+                    });
 
-                html!{
-                    <NotificationComponent {notification} {onclick} />
-                }
-            })}
+                    html!{
+                        <NotificationComponent {notification} {onclick} />
+                    }
+                })}
+            </div>
         </ContextProvider<NotificationsManager>>
     }
 }
