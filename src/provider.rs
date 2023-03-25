@@ -4,7 +4,7 @@ use yew::{
 };
 
 use crate::manager::{Action, NotificationsList};
-use crate::{NotificationComponent, NotificationsManager};
+use crate::{Notifiable, NotificationComponent, NotificationsManager};
 
 #[derive(Properties, Clone, PartialEq)]
 pub struct NotificationsProviderProps {
@@ -12,8 +12,8 @@ pub struct NotificationsProviderProps {
 }
 
 #[function_component(NotificationsProvider)]
-pub fn notifications_provider(props: &NotificationsProviderProps) -> Html {
-    let notifications = use_reducer_eq(NotificationsList::default);
+pub fn notifications_provider<T: Notifiable + PartialEq + Clone + Default>(props: &NotificationsProviderProps) -> Html {
+    let notifications = use_reducer_eq(NotificationsList::<T>::default);
 
     let manager = NotificationsManager {
         sender: Some(notifications.dispatcher()),
@@ -26,7 +26,7 @@ pub fn notifications_provider(props: &NotificationsProviderProps) -> Html {
             let sender = sender.clone();
             let is_active = *is_active;
 
-            let interval = Interval::new(NotificationsList::TIME_TICK_MILLIS as u32, move || {
+            let interval = Interval::new(NotificationsList::<T>::TIME_TICK_MILLIS as u32, move || {
                 if is_active {
                     sender.dispatch(Action::Tick);
                 }
@@ -42,12 +42,12 @@ pub fn notifications_provider(props: &NotificationsProviderProps) -> Html {
     let dispatcher = notifications.dispatcher();
 
     html! {
-        <ContextProvider<NotificationsManager> context={manager}>
+        <ContextProvider<NotificationsManager<T>> context={manager}>
             {children}
             <div class={classes!("notifications")}>
                 {for ns.iter().map(|n| {
                     let notification = n.clone();
-                    let id = notification.id;
+                    let id = notification.id();
 
                     let onclick = {
                         let dispatcher = dispatcher.clone();
@@ -71,10 +71,10 @@ pub fn notifications_provider(props: &NotificationsProviderProps) -> Html {
                     };
 
                     html!{
-                        <NotificationComponent {notification} {onclick} {onenter} {onleave} />
+                        <NotificationComponent<T> {notification} {onclick} {onenter} {onleave} />
                     }
                 })}
             </div>
-        </ContextProvider<NotificationsManager>>
+        </ContextProvider<NotificationsManager<T>>>
     }
 }

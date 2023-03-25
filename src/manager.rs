@@ -1,39 +1,44 @@
+use std::fmt::Debug;
 use std::rc::Rc;
 
 use time::Duration;
 use uuid::Uuid;
 use yew::{Reducible, UseReducerDispatcher};
 
-use crate::Notification;
+use crate::Notifiable;
 
 #[derive(Default, Clone, PartialEq)]
-pub struct NotificationsManager {
-    pub(crate) sender: Option<UseReducerDispatcher<NotificationsList>>,
+pub struct NotificationsManager<T: Notifiable + PartialEq + Clone + Default> {
+    pub(crate) sender: Option<UseReducerDispatcher<NotificationsList<T>>>,
 }
 
-impl NotificationsManager {
-    pub fn spawn(&self, notification: Notification) {
+impl<T: Notifiable + PartialEq + Clone + Default> NotificationsManager<T> {
+    pub fn spawn(&self, notification: T) {
         if let Some(sender) = &self.sender {
             sender.dispatch(Action::New(notification));
         }
     }
 }
 
-#[derive(Debug, Clone, PartialEq)]
-pub enum Action {
-    New(Notification),
+#[derive(Debug)]
+pub enum Action<T: Notifiable + PartialEq + Clone + Default> {
+    New(T),
     Close(Uuid),
     Tick,
     Pause(Uuid),
     Continue(Uuid),
 }
 
-#[derive(Debug, Clone, PartialEq, Default)]
-pub struct NotificationsList {
-    pub notifications: Vec<Notification>,
+#[derive(Debug, Default, Clone, PartialEq)]
+pub struct NotificationsList<T: Notifiable + PartialEq + Clone> {
+    pub notifications: Vec<T>,
 }
 
-impl NotificationsList {
+impl<T: Notifiable + PartialEq + Clone> NotificationsList<T> {
+    //
+}
+
+impl<T: Notifiable + PartialEq + Clone> NotificationsList<T> {
     pub const TIME_TICK_MILLIS: usize = 1000; // every second
     pub const TIME_TICK_DURATION: Duration = Duration::seconds(1);
 
@@ -42,8 +47,8 @@ impl NotificationsList {
     }
 }
 
-impl Reducible for NotificationsList {
-    type Action = Action;
+impl<T: Notifiable + PartialEq + Clone + Default> Reducible for NotificationsList<T> {
+    type Action = Action<T>;
 
     fn reduce(self: Rc<Self>, action: Self::Action) -> Rc<Self> {
         match action {
@@ -54,7 +59,12 @@ impl Reducible for NotificationsList {
                 Rc::new(Self { notifications })
             }
             Action::Close(id) => {
-                let notifications = self.notifications.clone().into_iter().filter(|n| n.id != id).collect();
+                let notifications = self
+                    .notifications
+                    .clone()
+                    .into_iter()
+                    .filter(|n| n.id() != id)
+                    .collect();
 
                 Rc::new(Self { notifications })
             }
@@ -64,13 +74,10 @@ impl Reducible for NotificationsList {
                     .clone()
                     .into_iter()
                     .filter_map(|mut n| {
-                        if n.paused {
+                        if n.is_paused() {
                             Some(n)
-                        } else if n.lifetime >= Self::TIME_TICK_DURATION {
-                            n.lifetime = n
-                                .lifetime
-                                .checked_sub(Self::TIME_TICK_DURATION)
-                                .expect("lifetime should be long enough");
+                        } else if n.is_alive() {
+                            n.apply_tick(Self::TIME_TICK_DURATION);
 
                             Some(n)
                         } else {
@@ -87,8 +94,8 @@ impl Reducible for NotificationsList {
                     .clone()
                     .into_iter()
                     .map(|mut n| {
-                        if n.id == id {
-                            n.paused = true;
+                        if n.id() == id {
+                            n.mouse_in();
                         }
                         n
                     })
@@ -102,9 +109,8 @@ impl Reducible for NotificationsList {
                     .clone()
                     .into_iter()
                     .map(|mut n| {
-                        if n.id == id {
-                            n.paused = false;
-                            n.lifetime = Notification::NOTIFICATION_LIFETIME;
+                        if n.id() == id {
+                            n.mouse_out();
                         }
                         n
                     })
