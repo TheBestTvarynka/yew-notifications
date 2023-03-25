@@ -1,5 +1,5 @@
 use yew::{function_component, html, Callback, Html};
-use yew_notifications::{use_toaster, NotificationsProvider};
+use yew_notifications::{use_toaster, Notification, NotificationType, NotificationsProvider};
 
 #[function_component(Inner)]
 fn inner() -> Html {
@@ -7,7 +7,11 @@ fn inner() -> Html {
     let onclick = Callback::from(move |_| {
         log::debug!("onclick: spawn");
 
-        notifications_manager.spawn("my new notification");
+        notifications_manager.spawn(Notification::new(
+            NotificationType::Info,
+            "some title",
+            "some description",
+        ));
     });
 
     html! {

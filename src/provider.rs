@@ -1,7 +1,7 @@
 use yew::{function_component, html, use_reducer_eq, Callback, Children, ContextProvider, Html, Properties};
 
 use crate::manager::{Action, NotificationsList};
-use crate::NotificationsManager;
+use crate::{NotificationComponent, NotificationsManager};
 
 #[derive(Properties, Clone, PartialEq)]
 pub struct NotificationsProviderProps {
@@ -24,13 +24,17 @@ pub fn notifications_provider(props: &NotificationsProviderProps) -> Html {
             {children}
             {for ns.iter().map(|n| {
                 let dispatcher = dispatcher.clone();
+
                 let notification = n.clone();
+                let id = notification.id;
 
                 let onclick = Callback::from(move |_| {
-                    dispatcher.dispatch(Action::Close(notification.clone()));
+                    dispatcher.dispatch(Action::Close(id));
                 });
 
-                html!{ <span {onclick}>{n}</span> }
+                html!{
+                    <NotificationComponent {notification} {onclick} />
+                }
             })}
         </ContextProvider<NotificationsManager>>
     }

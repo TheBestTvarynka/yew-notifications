@@ -1,6 +1,9 @@
 use std::rc::Rc;
 
+use uuid::Uuid;
 use yew::{Reducible, UseReducerDispatcher};
+
+use crate::Notification;
 
 #[derive(Default, Clone, PartialEq)]
 pub struct NotificationsManager {
@@ -8,22 +11,22 @@ pub struct NotificationsManager {
 }
 
 impl NotificationsManager {
-    pub fn spawn(&self, n: impl Into<String>) {
+    pub fn spawn(&self, notification: Notification) {
         if let Some(sender) = &self.sender {
-            sender.dispatch(Action::New(n.into()));
+            sender.dispatch(Action::New(notification));
         }
     }
 }
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Action {
-    New(String),
-    Close(String),
+    New(Notification),
+    Close(Uuid),
 }
 
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct NotificationsList {
-    pub notifications: Vec<String>,
+    pub notifications: Vec<Notification>,
 }
 
 impl Reducible for NotificationsList {
@@ -37,13 +40,8 @@ impl Reducible for NotificationsList {
 
                 Rc::new(Self { notifications })
             }
-            Action::Close(notification) => {
-                let mut notifications = self.notifications.clone();
-                if let Some(index) = notification.find(&notification) {
-                    notifications.remove(index);
-                } else {
-                    log::warn!("Got notification that doesn't exist: {:?}", notification);
-                }
+            Action::Close(id) => {
+                let notifications = self.notifications.clone().into_iter().filter(|n| n.id != id).collect();
 
                 Rc::new(Self { notifications })
             }
