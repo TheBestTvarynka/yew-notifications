@@ -10,6 +10,7 @@ repository = "https://github.com/TheBestTvarynka/yew-notifications"
 
 [dependencies]
 yew = { version = "0.20", default-features = false }
+gloo = "0.8.0"
 
 # logging
 log = "0.4.17"
@@ -17,5 +18,3 @@ log = "0.4.17"
 # utils
 time = { version = "0.3.20", features = ["local-offset", "wasm-bindgen"] }
 uuid = { version = "1.2.1", features = ["v4", "js"] }
-
-# style

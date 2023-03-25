@@ -1,4 +1,4 @@
-use time::OffsetDateTime;
+use time::{Duration, OffsetDateTime};
 use uuid::Uuid;
 use yew::{classes, function_component, html, Callback, Classes, Html, MouseEvent, Properties};
 
@@ -28,17 +28,25 @@ pub struct Notification {
     pub(crate) notification_type: NotificationType,
     pub(crate) title: Option<String>,
     pub(crate) description: String,
+
     pub(crate) spawn_time: OffsetDateTime,
+    pub(crate) lifetime: Duration,
+    pub(crate) paused: bool,
 }
 
 impl Notification {
+    pub const NOTIFICATION_LIFETIME: Duration = Duration::seconds(3);
+
     pub fn new(notification_type: NotificationType, title: impl Into<String>, description: impl Into<String>) -> Self {
         Self {
             id: Uuid::new_v4(),
             notification_type,
             title: Some(title.into()),
             description: description.into(),
+
             spawn_time: OffsetDateTime::now_local().expect("Can not acquire local current time"),
+            lifetime: Self::NOTIFICATION_LIFETIME,
+            paused: false,
         }
     }
 
@@ -48,7 +56,10 @@ impl Notification {
             notification_type,
             title: None,
             description: description.into(),
+
             spawn_time: OffsetDateTime::now_local().expect("Can not acquire local current time"),
+            lifetime: Self::NOTIFICATION_LIFETIME,
+            paused: false,
         }
     }
 
@@ -58,7 +69,10 @@ impl Notification {
             notification_type,
             title: _,
             description,
+
             spawn_time,
+            lifetime,
+            paused,
         } = self;
 
         Self {
@@ -66,7 +80,10 @@ impl Notification {
             notification_type,
             title: Some(new_title.into()),
             description,
+
             spawn_time,
+            lifetime,
+            paused,
         }
     }
 
@@ -76,7 +93,10 @@ impl Notification {
             notification_type: _,
             title,
             description,
+
             spawn_time,
+            lifetime,
+            paused,
         } = self;
 
         Self {
@@ -84,7 +104,10 @@ impl Notification {
             notification_type: new_notification_type,
             title,
             description,
+
             spawn_time,
+            lifetime,
+            paused,
         }
     }
 
@@ -94,7 +117,10 @@ impl Notification {
             notification_type,
             title,
             description: _,
+
             spawn_time,
+            lifetime,
+            paused,
         } = self;
 
         Self {
@@ -102,7 +128,10 @@ impl Notification {
             notification_type,
             title,
             description: new_description.into(),
+
             spawn_time,
+            lifetime,
+            paused,
         }
     }
 }
@@ -111,6 +140,8 @@ impl Notification {
 pub struct NotificationComponentProps {
     pub notification: Notification,
     pub onclick: Callback<MouseEvent>,
+    pub onenter: Callback<MouseEvent>,
+    pub onleave: Callback<MouseEvent>,
 }
 
 #[function_component(NotificationComponent)]
@@ -120,13 +151,23 @@ pub fn notification_component(props: &NotificationComponentProps) -> Html {
         notification_type,
         title,
         description,
+
         spawn_time,
+        lifetime: _,
+        paused,
     } = &props.notification;
 
     let onclick = props.onclick.clone();
+    let onenter = props.onenter.clone();
+    let onleave = props.onleave.clone();
+
+    let mut classes = vec![classes!("notification"), notification_type.into()];
+    if *paused {
+        classes.push(classes!("paused"));
+    }
 
     html! {
-        <div {onclick} class={vec![classes!("notification"), notification_type.into()]}>
+        <div {onclick} onmouseenter={onenter} onmouseleave={onleave} class={classes}>
             <span>{title.as_ref().map(|s| s.as_str()).unwrap_or_default()}</span>
             <span>{description}</span>
             <span class={classes!("time")}>{format_date_time(&spawn_time)}</span>
