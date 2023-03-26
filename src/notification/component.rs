@@ -3,14 +3,23 @@ use yew::{classes, function_component, html, Callback, Html, MouseEvent, Propert
 use crate::utils::format_date_time;
 use crate::{Notifiable, Notification};
 
+/// Props for [`NotificationComponent`]
 #[derive(Properties, Clone, PartialEq)]
 pub struct NotificationComponentProps {
+    /// Notification object to render.
     pub notification: Notification,
+
+    /// *onclick* event callback.
     pub onclick: Callback<MouseEvent>,
+
+    /// *onenter* event callback.
     pub onenter: Callback<MouseEvent>,
+
+    /// *onleave* event callback.
     pub onleave: Callback<MouseEvent>,
 }
 
+/// Standard notification component.
 #[function_component(NotificationComponent)]
 pub fn notification_component(props: &NotificationComponentProps) -> Html {
     let title = props.notification.title.as_ref();

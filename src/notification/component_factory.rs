@@ -2,6 +2,9 @@ use yew::{html, Callback, Html, MouseEvent};
 
 use crate::{NotifiableComponentFactory, Notification, NotificationComponent};
 
+/// Standard notification factory.
+/// 
+/// This factory used for [`Notification`] components creation.
 #[derive(Clone, PartialEq, Default)]
 pub struct NotificationFactory;
 

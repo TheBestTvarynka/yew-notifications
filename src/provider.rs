@@ -8,6 +8,7 @@ use yew::{
 use crate::manager::{Action, NotificationsList};
 use crate::{Notifiable, NotifiableComponentFactory, NotificationsManager};
 
+/// Props for [`NotificationsProvider`]
 #[derive(Properties, PartialEq, Clone)]
 pub struct NotificationsProviderProps<T: Notifiable + PartialEq, F: NotifiableComponentFactory<T> + PartialEq + Clone> {
     pub children: Children,
@@ -16,6 +17,11 @@ pub struct NotificationsProviderProps<T: Notifiable + PartialEq, F: NotifiableCo
     pub _notification: PhantomData<T>,
 }
 
+/// The notification provider component.
+/// 
+/// Every child (direct or indirect) of this component can use `use_notification` hook to spawn new notifications.
+/// `T` - type of the notification.
+/// `F` - notification factory type.
 #[function_component(NotificationsProvider)]
 pub fn notifications_provider<
     T: Notifiable + PartialEq + Clone,

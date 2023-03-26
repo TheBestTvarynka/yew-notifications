@@ -7,12 +7,14 @@ use yew::{Reducible, UseReducerDispatcher};
 
 use crate::Notifiable;
 
+/// Returned object from the `use_notification` hook. Can spawn new notifications.
 #[derive(Clone, PartialEq)]
 pub struct NotificationsManager<T: Notifiable + PartialEq + Clone> {
     pub(crate) sender: Option<UseReducerDispatcher<NotificationsList<T>>>,
 }
 
 impl<T: Notifiable + PartialEq + Clone> NotificationsManager<T> {
+    /// Spawns new notification of the type T.
     pub fn spawn(&self, notification: T) {
         if let Some(sender) = &self.sender {
             sender.dispatch(Action::New(notification));

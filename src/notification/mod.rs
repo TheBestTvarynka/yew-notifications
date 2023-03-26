@@ -9,11 +9,17 @@ use yew::{classes, Classes};
 
 use crate::Notifiable;
 
+/// Standard notification type.
 #[derive(Debug, Clone, PartialEq, Default)]
 pub enum NotificationType {
+    /// Represents some informative message for the user.
     #[default]
     Info,
+
+    /// Represents some warning.
     Warn,
+
+    /// Represents some error message.
     Error,
 }
 
@@ -40,6 +46,7 @@ impl From<&NotificationType> for Classes {
     }
 }
 
+/// Standard notification.
 #[derive(Debug, Clone, PartialEq)]
 pub struct Notification {
     pub(crate) id: Uuid,
@@ -55,12 +62,13 @@ pub struct Notification {
 impl Notification {
     pub const NOTIFICATION_LIFETIME: Duration = Duration::seconds(3);
 
-    pub fn new(notification_type: NotificationType, title: impl Into<String>, description: impl Into<String>) -> Self {
+    /// Creates a new standard notification from notification type, title, and text.
+    pub fn new(notification_type: NotificationType, title: impl Into<String>, text: impl Into<String>) -> Self {
         Self {
             id: Uuid::new_v4(),
             notification_type,
             title: Some(title.into()),
-            text: description.into(),
+            text: text.into(),
 
             spawn_time: OffsetDateTime::now_local().expect("Can not acquire local current time"),
             lifetime: Self::NOTIFICATION_LIFETIME,
@@ -68,12 +76,13 @@ impl Notification {
         }
     }
 
-    pub fn from_description_and_type(notification_type: NotificationType, description: impl Into<String>) -> Self {
+    /// Creates a new standard notification from notification type and text. Title will be omitted.
+    pub fn from_description_and_type(notification_type: NotificationType, text: impl Into<String>) -> Self {
         Self {
             id: Uuid::new_v4(),
             notification_type,
             title: None,
-            text: description.into(),
+            text: text.into(),
 
             spawn_time: OffsetDateTime::now_local().expect("Can not acquire local current time"),
             lifetime: Self::NOTIFICATION_LIFETIME,
@@ -81,6 +90,7 @@ impl Notification {
         }
     }
 
+    /// Set the title for the notification.
     pub fn with_title(self, new_title: impl Into<String>) -> Self {
         let Notification {
             id,
@@ -105,6 +115,7 @@ impl Notification {
         }
     }
 
+    /// Set the type for the notification.
     pub fn with_type(self, new_notification_type: NotificationType) -> Self {
         let Notification {
             id,
@@ -129,7 +140,8 @@ impl Notification {
         }
     }
 
-    pub fn with_description(self, new_description: impl Into<String>) -> Self {
+    /// Set the text for the notification.
+    pub fn with_text(self, new_text: impl Into<String>) -> Self {
         let Notification {
             id,
             notification_type,
@@ -145,7 +157,7 @@ impl Notification {
             id,
             notification_type,
             title,
-            text: new_description.into(),
+            text: new_text.into(),
 
             spawn_time,
             lifetime,
