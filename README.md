@@ -1,5 +1,11 @@
 # yew-notifications
 
+[Motivation](#motivation)
+[How to use it](#how-to-use-it)
+[Moving forward](#moving-forward)
+[Meta](#meta)
+[Contributing](#contributing)
+
 Notifications components library for [Yew](https://yew.rs/). It's like [react-toastify](https://www.npmjs.com/package/react-toastify) but for [yew](https://yew.rs/) and more simpler (so far :smirk:).
 
 ### Motivation
@@ -11,6 +17,15 @@ Inspired by `yew-toastr`: https://github.com/kinnison/linkdoku/tree/main/yew-toa
 ### How to use it
 
 1. Decide which notification components to use. `yew-notifications` already has implemented standard notifications but you can write your own. See [`basic`](https://github.com/TheBestTvarynka/yew-notifications/tree/main/examples/basic) and [`custom`](https://github.com/TheBestTvarynka/yew-notifications/tree/main/examples/custom) examples for more information.
+```toml
+# Cargo.toml
+
+# if you want to use standard notification components
+yew-notifications = { git = "https://github.com/TheBestTvarynka/yew-notifications.git", features = ["standard-notification"] }
+
+# if you decide to write and use custom notification components
+yew-notifications = { git = "https://github.com/TheBestTvarynka/yew-notifications.git" }
+```
 2. Include `yew-notification` styles into your project (only if you use notification components from `yew-notifications`):
 ```HTML
 <link data-trunk rel="sass" href="https://raw.githubusercontent.com/TheBestTvarynka/yew-notifications/main/static/notification.scss" />
@@ -35,6 +50,10 @@ use yew_notifications::use_notification;
 let notifications_manager = use_notification::<Notification>();
 notifications_manager.spawn(Notification::new(...));
 ```
+
+### Moving forward
+
+At this point, this library has minimal functionality implemented. I plan to improve it continuously according to my needs. If you have any feature requests, then create an issue with the description. It'll be a priority for me.
 
 ### Meta
 
