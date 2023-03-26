@@ -9,7 +9,9 @@ use std::fmt::Debug;
 
 pub use hook::use_notification;
 pub use manager::NotificationsManager;
-pub use notification::{Notification, NotificationComponent, NotificationComponentProps, NotificationType};
+pub use notification::{
+    Notification, NotificationComponent, NotificationComponentProps, NotificationFactory, NotificationType,
+};
 pub use provider::{NotificationsProvider, NotificationsProviderProps};
 use time::Duration;
 use uuid::Uuid;

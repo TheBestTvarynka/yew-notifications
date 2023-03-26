@@ -1,9 +1,9 @@
 use yew::{function_component, html, Callback, Html};
-use yew_notifications::{use_toaster, Notification, NotificationType, NotificationsProvider};
+use yew_notifications::{use_notification, Notification, NotificationFactory, NotificationType, NotificationsProvider};
 
 #[function_component(Inner)]
 fn inner() -> Html {
-    let notifications_manager = use_toaster();
+    let notifications_manager = use_notification::<Notification>();
     let onclick = Callback::from(move |_| {
         log::debug!("onclick: spawn");
 
@@ -21,12 +21,14 @@ fn inner() -> Html {
 
 #[function_component(App)]
 pub fn app() -> Html {
+    let component_creator = NotificationFactory::default();
+
     html! {
         <div>
-            <NotificationsProvider>
+            <NotificationsProvider<Notification, NotificationFactory> {component_creator}>
                 <span>{"example"}</span>
                 <Inner />
-            </NotificationsProvider>
+            </NotificationsProvider<Notification, NotificationFactory>>
         </div>
     }
 }

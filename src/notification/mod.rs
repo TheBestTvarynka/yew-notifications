@@ -2,6 +2,7 @@ mod component;
 pub mod component_factory;
 
 pub use component::{NotificationComponent, NotificationComponentProps};
+pub use component_factory::NotificationFactory;
 use time::{Duration, OffsetDateTime};
 use uuid::Uuid;
 use yew::{classes, Classes};
@@ -150,7 +151,7 @@ impl Notifiable for Notification {
     }
 
     fn is_alive(&self) -> bool {
-        self.lifetime == Duration::default()
+        self.lifetime != Duration::default()
     }
 
     fn mouse_in(&mut self) {

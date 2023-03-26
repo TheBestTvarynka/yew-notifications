@@ -7,12 +7,12 @@ use yew::{Reducible, UseReducerDispatcher};
 
 use crate::Notifiable;
 
-#[derive(Default, Clone, PartialEq)]
-pub struct NotificationsManager<T: Notifiable + PartialEq + Clone + Default> {
+#[derive(Clone, PartialEq)]
+pub struct NotificationsManager<T: Notifiable + PartialEq + Clone> {
     pub(crate) sender: Option<UseReducerDispatcher<NotificationsList<T>>>,
 }
 
-impl<T: Notifiable + PartialEq + Clone + Default> NotificationsManager<T> {
+impl<T: Notifiable + PartialEq + Clone> NotificationsManager<T> {
     pub fn spawn(&self, notification: T) {
         if let Some(sender) = &self.sender {
             sender.dispatch(Action::New(notification));
@@ -20,8 +20,16 @@ impl<T: Notifiable + PartialEq + Clone + Default> NotificationsManager<T> {
     }
 }
 
+impl<T: Notifiable + PartialEq + Clone> Default for NotificationsManager<T> {
+    fn default() -> Self {
+        Self {
+            sender: Default::default(),
+        }
+    }
+}
+
 #[derive(Debug)]
-pub enum Action<T: Notifiable + PartialEq + Clone + Default> {
+pub enum Action<T: Notifiable + PartialEq + Clone> {
     New(T),
     Close(Uuid),
     Tick,
@@ -29,13 +37,17 @@ pub enum Action<T: Notifiable + PartialEq + Clone + Default> {
     Continue(Uuid),
 }
 
-#[derive(Debug, Default, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct NotificationsList<T: Notifiable + PartialEq + Clone> {
     pub notifications: Vec<T>,
 }
 
-impl<T: Notifiable + PartialEq + Clone> NotificationsList<T> {
-    //
+impl<T: Notifiable + PartialEq + Clone> Default for NotificationsList<T> {
+    fn default() -> Self {
+        Self {
+            notifications: Default::default(),
+        }
+    }
 }
 
 impl<T: Notifiable + PartialEq + Clone> NotificationsList<T> {
@@ -47,7 +59,7 @@ impl<T: Notifiable + PartialEq + Clone> NotificationsList<T> {
     }
 }
 
-impl<T: Notifiable + PartialEq + Clone + Default> Reducible for NotificationsList<T> {
+impl<T: Notifiable + PartialEq + Clone> Reducible for NotificationsList<T> {
     type Action = Action<T>;
 
     fn reduce(self: Rc<Self>, action: Self::Action) -> Rc<Self> {

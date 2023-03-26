@@ -12,12 +12,13 @@ use crate::{Notifiable, NotifiableComponentFactory, NotificationsManager};
 pub struct NotificationsProviderProps<T: Notifiable + PartialEq, F: NotifiableComponentFactory<T> + PartialEq + Clone> {
     pub children: Children,
     pub component_creator: F,
+    #[prop_or_default]
     pub _notification: PhantomData<T>,
 }
 
 #[function_component(NotificationsProvider)]
 pub fn notifications_provider<
-    T: Notifiable + PartialEq + Clone + Default,
+    T: Notifiable + PartialEq + Clone,
     F: NotifiableComponentFactory<T> + PartialEq + Clone,
 >(
     props: &NotificationsProviderProps<T, F>,

@@ -2,7 +2,7 @@ use yew::{html, Callback, Html, MouseEvent};
 
 use crate::{NotifiableComponentFactory, Notification, NotificationComponent};
 
-#[derive(Clone)]
+#[derive(Clone, PartialEq, Default)]
 pub struct NotificationFactory;
 
 impl NotifiableComponentFactory<Notification> for NotificationFactory {
