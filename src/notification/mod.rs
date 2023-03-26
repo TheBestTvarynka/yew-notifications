@@ -17,6 +17,19 @@ pub enum NotificationType {
     Error,
 }
 
+impl TryFrom<&str> for NotificationType {
+    type Error = String;
+
+    fn try_from(data: &str) -> Result<Self, <NotificationType as TryFrom<&str>>::Error> {
+        match data {
+            "info" => Ok(Self::Info),
+            "warn" => Ok(Self::Warn),
+            "error" => Ok(Self::Error),
+            invalid_type => Err(invalid_type.to_owned()),
+        }
+    }
+}
+
 impl From<&NotificationType> for Classes {
     fn from(notification_type: &NotificationType) -> Self {
         match notification_type {

@@ -1,14 +1,17 @@
 [package]
-name = "example"
+name = "basic-example"
+description = "Simple web app that shows how to use standard notifications"
 version = "0.1.0"
 edition = "2021"
+authors = ["Pavlo Myroniuk <the.best.tvarynka@gmail.com>"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 yew = { version = "0.20", features = ["csr"] }
-yew-notifications = { path = "../" }
+yew-notifications = { path = "../../" }
 
 # logging
 wasm-logger = "0.2.0"
 log = "0.4.17"
+web-sys = "0.3.61"
