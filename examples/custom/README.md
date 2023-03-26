@@ -5,7 +5,7 @@
 
 `yew-notifications` has all the needed notification structure and a notification component. But sometimes we need altogether custom notifications, for example, with another style, behaviour, etc. This crate shows how to write custom notifications.
 
-This example has:
+This custom notifications have:
 
 * different notification style;
 * notification will not be disappeared in time;
@@ -13,7 +13,7 @@ This example has:
 
 ## How to write custom notifications
 
-1. Create your notification structure (it'll contain all needed notification data like title, text, etc, maybe logo) and implement the `Notifiable` trait. For example, `CustomNotification`.
+1. Create notification structure (it'll contain all needed notification data like title, text, etc, maybe logo) and implement the `Notifiable` trait. For example, `CustomNotification`.
 2. Create a yew component that will represent one separate notification. For example, `CustomNotificationComponent`.
 3. Create a notification factory structure (it'll generate yew component for every newly spawned notification) and implement the `NotifiableComponentFactory` trait. For example, `CustomNotificationFactory`.
 4. Specify your new types in the `NotificationProvider` component:
