@@ -1,7 +1,7 @@
 
 # Custom notifications
 
-## What it is
+### What it is
 
 `yew-notifications` has all the needed notification structure and a notification component. But sometimes we need altogether custom notifications, for example, with another style, behaviour, etc. This crate shows how to write custom notifications.
 
@@ -11,7 +11,7 @@ This custom notifications have:
 * notification will not be disappeared in time;
 * notification will be removed only in two ways: on click or when the mouse leaves the notification area.
 
-## How to write custom notifications
+### How to write custom notifications
 
 1. Create notification structure (it'll contain all needed notification data like title, text, etc, maybe logo) and implement the `Notifiable` trait. For example, `CustomNotification`.
 2. Create a yew component that will represent one separate notification. For example, `CustomNotificationComponent`.
@@ -24,7 +24,7 @@ This custom notifications have:
 </NotificationsProvider<CustomNotification, CustomNotificationFactory>>
 ```
 
-## How to run this demo:
+### How to run this demo:
 
 1. Install [`trunk`](https://github.com/thedodd/trunk). [Additional guide](https://yew.rs/docs/next/getting-started/introduction#install-trunk).
 2. Run `trunk serve` in your terminal.

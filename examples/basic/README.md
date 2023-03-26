@@ -1,11 +1,11 @@
 
 # Basic notifications
 
-## What it is
+### What it is
 
 This crate shows how to use the `yew-notifications` library and built-in notifications.
 
-## Behaviour
+### Behaviour
 
 Standard notifications have the following behaviour:
 
@@ -15,7 +15,7 @@ Standard notifications have the following behaviour:
 * have title, text, and spawn (creation) time;
 * if you hover over the notification it'll never disappear. When the mouse leaves the notification, the lifetime will be restarted (4 seconds);
 
-## How to run this demo:
+### How to run this demo:
 
 1. Install [`trunk`](https://github.com/thedodd/trunk). [Additional guide](https://yew.rs/docs/next/getting-started/introduction#install-trunk).
 2. Run `trunk serve` in your terminal.

@@ -14,7 +14,7 @@ Notifications components library for [Yew](https://yew.rs/). It's like [react-to
 
 I was writing my personal project [crypto-helper](https://github.com/TheBestTvarynka/crypto-helper/) some time ago. I was forced to write [awful code](https://github.com/TheBestTvarynka/crypto-helper/blob/8ad5ca3180925120a6f7ceb39253000f7ce3f447/src/notification.rs) to add some notifications functionality to my web app. So, I decided to write this library that allows the easy showing of notifications to users.
 
-Inspired by `yew-toastr`: https://github.com/kinnison/linkdoku/tree/main/yew-toastrack .
+Inspired by `yew-toastrack`: https://github.com/kinnison/linkdoku/tree/main/yew-toastrack .
 
 ### How to use it
 
