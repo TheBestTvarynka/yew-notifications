@@ -1,7 +1,5 @@
 # yew-notifications
 
-### Info
-
 Notifications components library for [Yew](https://yew.rs/). It's like [react-toastify](https://www.npmjs.com/package/react-toastify) but for [yew](https://yew.rs/) and more simpler (so far :smirk:).
 
 ### Motivation
@@ -18,11 +16,12 @@ Inspired by `yew-toastr`: https://github.com/kinnison/linkdoku/tree/main/yew-toa
 <link data-trunk rel="sass" href="https://raw.githubusercontent.com/TheBestTvarynka/yew-notifications/main/static/notification.scss" />
 ```
 Or you can copy this file into your project and specify the path to it instead of the link. At this point, the *scss* file is one possible way to import styles.
+
 3. Wrap needed components into `NotificationProvider`:
 ```Rust
 // Notification, NotificationFactory  - your notification types.
 // They can be imported from this library or written by yourself (see `custom` example).
-// component_creator is an instance of the CustomNotificationFactory
+// component_creator is an instance of the NotificationFactory
 <NotificationsProvider<Notification, NotificationFactory> {component_creator}>
     // some inner components
 </NotificationsProvider<Notification, NotificationFactory>>
