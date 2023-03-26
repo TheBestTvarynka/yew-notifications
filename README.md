@@ -1,10 +1,12 @@
 # yew-notifications
 
-[Motivation](#motivation)
-[How to use it](#how-to-use-it)
-[Moving forward](#moving-forward)
-[Meta](#meta)
-[Contributing](#contributing)
+Table of content:
+
+* [Motivation](#motivation)
+* [How to use it](#how-to-use-it)
+* [Moving forward](#moving-forward)
+* [Meta](#meta)
+* [Contributing](#contributing)
 
 Notifications components library for [Yew](https://yew.rs/). It's like [react-toastify](https://www.npmjs.com/package/react-toastify) but for [yew](https://yew.rs/) and more simpler (so far :smirk:).
 
