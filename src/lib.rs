@@ -1,5 +1,6 @@
 mod hook;
 mod manager;
+#[cfg(feature = "standard-notification")]
 mod notification;
 mod provider;
 mod utils;
@@ -9,9 +10,12 @@ use std::fmt::Debug;
 
 pub use hook::use_notification;
 pub use manager::NotificationsManager;
+
+#[cfg(feature = "standard-notification")]
 pub use notification::{
     Notification, NotificationComponent, NotificationComponentProps, NotificationFactory, NotificationType,
 };
+
 pub use provider::{NotificationsProvider, NotificationsProviderProps};
 use time::Duration;
 use uuid::Uuid;

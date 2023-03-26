@@ -8,6 +8,9 @@ readme = "README.md"
 license-file = "LICENSE"
 repository = "https://github.com/TheBestTvarynka/yew-notifications"
 
+[features]
+standard-notification = []
+
 [dependencies]
 yew = { version = "0.20", default-features = false }
 gloo = "0.8.0"

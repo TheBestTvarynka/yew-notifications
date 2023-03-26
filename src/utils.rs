@@ -1,6 +1,6 @@
-use time::OffsetDateTime;
 
-pub fn format_date_time(datetime: &OffsetDateTime) -> String {
+#[cfg(feature = "standard-notification")]
+pub fn format_date_time(datetime: &time::OffsetDateTime) -> String {
     format!(
         "{}:{}:{} {}.{}.{}",
         datetime.hour(),

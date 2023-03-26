@@ -7,7 +7,7 @@ authors = ["Pavlo Myroniuk <the.best.tvarynka@gmail.com>"]
 
 [dependencies]
 yew = { version = "0.20", features = ["csr"] }
-yew-notifications = { path = "../../" }
+yew-notifications = { path = "../../", features = ["standard-notification"] }
 web-sys = "0.3.61"
 
 # logging
