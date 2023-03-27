@@ -8,7 +8,7 @@ on:
     - 'main'
 jobs:
   deploy:
-    name: Deploy
+    name: Deploy documentation
     runs-on: ubuntu-latest
 
     permissions:
@@ -19,11 +19,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: 'Trunk Check'
-      uses: jetli/trunk-action@v0.1.0
-
     - name: 'Clippy'
-      run: 'cargo clippy -- -D warnings'
+      run: 'cargo clippy --all-features -- -D warnings'
 
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
