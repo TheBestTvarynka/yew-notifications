@@ -8,7 +8,7 @@ on:
     - 'main'
 jobs:
   check:
-    name: Check code with formatter & linter
+    name: Check library code
     runs-on: ubuntu-latest
 
     steps:
@@ -26,6 +26,26 @@ jobs:
 
     - name: 'Clippy'
       run: 'cargo clippy --all-features -- -D warnings'
+
+  check-basic-example:
+    name: Check basic example code
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: 'Add nightly channel'
+      run: 'rustup toolchain install nightly'
+
+    - name: 'Add nightly fmt'
+      run: 'rustup component add rustfmt --toolchain nightly-x86_64-unknown-linux-gnu'
+
+    - name: 'Fmt'
+      run: 'cd examples/basic && ls -l && pwd && cargo +nightly fmt --all -- --check'
+
+    - name: 'Clippy'
+      run: 'cd examples/basic && ls -l && pwd && cargo clippy -- -D warnings'
 
   deploy-documentation:
     name: Deploy documentation
@@ -58,7 +78,7 @@ jobs:
   deploy-basic-example:
     name: Deploy basic example
     runs-on: ubuntu-latest
-    needs: check
+    needs: [check, check-basic-example]
 
     permissions:
       contents: 'read'
@@ -69,7 +89,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: 'Trunk Check'
-      uses: jetli/trunk-action@v0.1.0
+      uses: jetli/trunk-action@v0.4.0
 
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
@@ -81,7 +101,7 @@ jobs:
       run: 'rustup target add wasm32-unknown-unknown'
 
     - name: 'Build'
-      run: 'cd examples/basic && trunk build --release'
+      run: 'cd examples/basic && trunk build --release --public-url /examples/basic'
 
     - name: 'Set up Cloud SDK'
       uses: google-github-actions/setup-gcloud@v0

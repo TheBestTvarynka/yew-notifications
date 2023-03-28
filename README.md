@@ -11,6 +11,7 @@ Table of content:
 Notifications components library for [Yew](https://yew.rs/). It's like [react-toastify](https://www.npmjs.com/package/react-toastify) but for [yew](https://yew.rs/) and more simpler (so far :smirk:).
 
 ![deploy](https://github.com/TheBestTvarynka/yew-notifications/actions/workflows/github-actions.yml/badge.svg)
+
 Documentation: https://yn-docs.qkation.com/
 
 ### Motivation
