@@ -5,12 +5,12 @@ use crate::Notifiable;
 
 /// This hook is used to manage notifications.
 /// Returned [`NotificationsManager`] can be used to spawn new notifications of the type `T`.
-/// 
+///
 /// # Example
-/// 
+///
 /// ```rust
 /// use yew_notifications::{Notification, use_notification};
-/// 
+///
 /// let notifications_manager = use_notification::<Notification>();
 /// notifications_manager.spawn(Notification::new(/* */));
 /// ```

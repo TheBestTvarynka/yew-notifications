@@ -1,27 +1,85 @@
 use std::marker::PhantomData;
 
 use yew::{
-    classes, function_component, html, use_effect_with_deps, use_reducer_eq, Callback, Children, ContextProvider, Html,
-    Properties,
+    classes, function_component, html, use_effect_with_deps, use_reducer_eq, Callback, Children, Classes,
+    ContextProvider, Html, Properties,
 };
 
 use crate::manager::{Action, NotificationsList};
 use crate::{Notifiable, NotifiableComponentFactory, NotificationsManager};
 
+/// Notifications position on the screen
+#[derive(Debug, Clone, PartialEq)]
+pub enum NotificationsPosition {
+    /// Spawned notifications will be places at the top left corner of the screen
+    TopLeft,
+    /// Spawned notifications will be places at the top right corner of the screen
+    TopRight,
+    /// Spawned notifications will be places at the bottom right corner of the screen
+    BottomRight,
+    /// Spawned notifications will be places at the bottom left corner of the screen
+    BottomLeft,
+    /// Can be used to specify custom css class for the notifications container
+    Custom(Classes),
+}
+
+impl From<&NotificationsPosition> for Classes {
+    fn from(position: &NotificationsPosition) -> Self {
+        match position {
+            NotificationsPosition::TopLeft => classes!("notifications-provider-top-left"),
+            NotificationsPosition::TopRight => classes!("notifications-provider-top-right"),
+            NotificationsPosition::BottomRight => classes!("notifications-provider-bottom-right"),
+            NotificationsPosition::BottomLeft => classes!("notifications-provider-bottom-left"),
+            NotificationsPosition::Custom(classes) => classes.clone(),
+        }
+    }
+}
+
+impl From<&str> for NotificationsPosition {
+    fn from(position: &str) -> Self {
+        match position {
+            "top-left" => Self::TopLeft,
+            "top-right" => Self::TopRight,
+            "bottom-left" => Self::BottomLeft,
+            "bottom-right" => Self::BottomRight,
+            p => Self::Custom(classes!(p.to_owned())),
+        }
+    }
+}
+
 /// Props for [`NotificationsProvider`]
 #[derive(Properties, PartialEq, Clone)]
 pub struct NotificationsProviderProps<T: Notifiable + PartialEq, F: NotifiableComponentFactory<T> + PartialEq + Clone> {
+    /// Inner provider components
     pub children: Children,
+    /// Instance of the component factory
     pub component_creator: F,
+    /// Notifications position on the screen
+    ///
+    /// Default position is bottom right.
+    #[prop_or(NotificationsPosition::BottomRight)]
+    pub position: NotificationsPosition,
     #[prop_or_default]
     pub _notification: PhantomData<T>,
 }
 
 /// The notification provider component.
-/// 
+///
 /// Every child (direct or indirect) of this component can use `use_notification` hook to spawn new notifications.
 /// `T` - type of the notification.
 /// `F` - notification factory type.
+///
+/// # Example
+///
+/// ```
+/// let component_creator = NotificationFactory::default();
+///
+/// html! {
+///     <NotificationsProvider<Notification, NotificationFactory> {component_creator}>
+///         <MyComponent />
+///     </NotificationsProvider<Notification, NotificationFactory>>
+/// }
+/// ```
 #[function_component(NotificationsProvider)]
 pub fn notifications_provider<
     T: Notifiable + PartialEq + Clone,
@@ -59,10 +117,12 @@ pub fn notifications_provider<
 
     let notification_creator = &props.component_creator;
 
+    let classes = vec![classes!("notifications"), (&props.position).into()];
+
     html! {
         <ContextProvider<NotificationsManager<T>> context={manager}>
             {children}
-            <div class={classes!("notifications")}>
+            <div class={classes}>
                 {for ns.iter().map(|n| {
                     let notification = n.clone();
                     let id = notification.id();
