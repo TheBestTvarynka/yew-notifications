@@ -1,6 +1,8 @@
 
 # Custom notifications
 
+Demo: https://yn-docs.qkation.com/examples/custom/index.html
+
 ### What it is
 
 `yew-notifications` has all the needed notification structure and a notification component. But sometimes we need altogether custom notifications, for example, with another style, behaviour, etc. This crate shows how to write custom notifications.

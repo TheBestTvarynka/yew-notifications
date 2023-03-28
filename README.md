@@ -32,11 +32,16 @@ yew-notifications = { git = "https://github.com/TheBestTvarynka/yew-notification
 # if you decide to write and use custom notification components
 yew-notifications = { git = "https://github.com/TheBestTvarynka/yew-notifications.git" }
 ```
-2. Include `yew-notification` styles into your project (only if you use notification components from `yew-notifications`):
+2. Include `yew-notification` styles into your project:
+```HTML
+<link data-trunk rel="sass" href="https://raw.githubusercontent.com/TheBestTvarynka/yew-notifications/main/static/notifications_provider.scss" />
+```
+
+This one below is needed only when you decide to use components from the `yew-notifications`:
 ```HTML
 <link data-trunk rel="sass" href="https://raw.githubusercontent.com/TheBestTvarynka/yew-notifications/main/static/notification.scss" />
 ```
-Or you can copy this file into your project and specify the path to it instead of the link. At this point, the *scss* file is one possible way to import styles.
+Or you can copy *scss* file into your project and specify the path to it instead of the link. At this point, the *scss* file is one possible way to import styles.
 
 3. Wrap needed components into `NotificationProvider`:
 ```Rust
@@ -56,6 +61,8 @@ use yew_notifications::use_notification;
 let notifications_manager = use_notification::<Notification>();
 notifications_manager.spawn(Notification::new(...));
 ```
+
+See the [`examples`](/examples/) directory for the code examples.
 
 ### Moving forward
 

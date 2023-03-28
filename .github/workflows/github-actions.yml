@@ -42,10 +42,10 @@ jobs:
       run: 'rustup component add rustfmt --toolchain nightly-x86_64-unknown-linux-gnu'
 
     - name: 'Fmt'
-      run: 'cd examples/basic && ls -l && pwd && cargo +nightly fmt --all -- --check'
+      run: 'cd examples/basic && cargo +nightly fmt --all -- --check'
 
     - name: 'Clippy'
-      run: 'cd examples/basic && ls -l && pwd && cargo clippy -- -D warnings'
+      run: 'cd examples/basic && cargo clippy -- -D warnings'
 
   check-custom-example:
     name: Check custom example code
@@ -62,10 +62,10 @@ jobs:
       run: 'rustup component add rustfmt --toolchain nightly-x86_64-unknown-linux-gnu'
 
     - name: 'Fmt'
-      run: 'cd examples/custom && ls -l && pwd && cargo +nightly fmt --all -- --check'
+      run: 'cd examples/custom && cargo +nightly fmt --all -- --check'
 
     - name: 'Clippy'
-      run: 'cd examples/custom && ls -l && pwd && cargo clippy -- -D warnings'
+      run: 'cd examples/custom && cargo clippy -- -D warnings'
 
   deploy-documentation:
     name: Deploy documentation
@@ -127,7 +127,7 @@ jobs:
       uses: google-github-actions/setup-gcloud@v0
 
     - name: 'Deploy documentation'
-      run: 'ls -l && pwd && gsutil -h "Cache-Control:no-store" -m cp -r examples/basic/dist/* gs://${GCP_BUCKET}/examples/basic'
+      run: 'gsutil -h "Cache-Control:no-store" -m cp -r examples/basic/dist/* gs://${GCP_BUCKET}/examples/basic'
 
   deploy-custom-example:
     name: Deploy custom example
@@ -161,4 +161,4 @@ jobs:
       uses: google-github-actions/setup-gcloud@v0
 
     - name: 'Deploy documentation'
-      run: 'ls -l && pwd && gsutil -h "Cache-Control:no-store" -m cp -r examples/custom/dist/* gs://${GCP_BUCKET}/examples/custom'
+      run: 'gsutil -h "Cache-Control:no-store" -m cp -r examples/custom/dist/* gs://${GCP_BUCKET}/examples/custom'

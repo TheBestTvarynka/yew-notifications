@@ -1,6 +1,8 @@
 
 # Basic notifications
 
+Demo: https://yn-docs.qkation.com/examples/basic/index.html
+
 ### What it is
 
 This crate shows how to use the `yew-notifications` library and built-in notifications.
