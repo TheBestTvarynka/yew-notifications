@@ -1,13 +1,27 @@
 use web_sys::HtmlInputElement;
 use yew::html::onchange::Event;
-use yew::{function_component, html, use_state, Callback, Html, TargetCast};
-use yew_notifications::{use_notification, Notification, NotificationFactory, NotificationType, NotificationsProvider};
+use yew::{function_component, html, use_state, Callback, Html, Properties, TargetCast};
+use yew_notifications::{
+    use_notification, Notification, NotificationFactory, NotificationType, NotificationsPosition, NotificationsProvider,
+};
+
+#[derive(Properties, PartialEq, Clone)]
+pub struct InnerProps {
+    pub position_setter: Callback<NotificationsPosition>,
+}
 
 #[function_component(Inner)]
-fn inner() -> Html {
+fn inner(props: &InnerProps) -> Html {
+    let position_setter = props.position_setter.clone();
+    let on_position_change = Callback::from(move |event: Event| {
+        let input: HtmlInputElement = event.target_unchecked_into();
+
+        position_setter.emit(input.value().as_str().into());
+    });
+
     let notification_type = use_state(|| NotificationType::Info);
     let notification_type_setter = notification_type.setter();
-    let onchange = Callback::from(move |event: Event| {
+    let on_type_change = Callback::from(move |event: Event| {
         let input: HtmlInputElement = event.target_unchecked_into();
 
         if let Ok(algorithm) = input.value().as_str().try_into() {
@@ -47,7 +61,13 @@ fn inner() -> Html {
 
     html! {
         <div style="display:flex;flex-direction:column;gap:1em;width:30em">
-            <select {onchange}>
+            <select onchange={on_position_change}>
+                <option selected={true} value={"top-left"}>{"top-left"}</option>
+                <option value={"top-right"}>{"top-right"}</option>
+                <option value={"bottom-right"}>{"bottom-right"}</option>
+                <option value={"bottom-left"}>{"bottom-left"}</option>
+            </select>
+            <select onchange={on_type_change}>
                 <option selected={true} value={"info"}>{"info"}</option>
                 <option value={"warn"}>{"warn"}</option>
                 <option value={"error"}>{"error"}</option>
@@ -62,11 +82,14 @@ fn inner() -> Html {
 #[function_component(App)]
 pub fn app() -> Html {
     let component_creator = NotificationFactory::default();
+    let position = use_state(|| NotificationsPosition::TopLeft);
+    let position_setter = position.setter();
 
+    let position_value = (*position).clone();
     html! {
         <div>
-            <NotificationsProvider<Notification, NotificationFactory> {component_creator}>
-                <Inner />
+            <NotificationsProvider<Notification, NotificationFactory> {component_creator} position={position_value}>
+                <Inner position_setter={move |position| position_setter.set(position)} />
             </NotificationsProvider<Notification, NotificationFactory>>
         </div>
     }
