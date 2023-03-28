@@ -87,4 +87,4 @@ jobs:
       uses: google-github-actions/setup-gcloud@v0
 
     - name: 'Deploy documentation'
-      run: 'ls -l && pwd && gsutil -h "Cache-Control:no-store" -m cp -r dist/* gs://${GCP_BUCKET}/examples/basic'
+      run: 'ls -l && pwd && gsutil -h "Cache-Control:no-store" -m cp -r examples/basic/dist/* gs://${GCP_BUCKET}/examples/basic'
