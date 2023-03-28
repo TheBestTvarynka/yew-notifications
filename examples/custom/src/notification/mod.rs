@@ -47,6 +47,6 @@ impl Notifiable for CustomNotification {
     }
 
     fn is_paused(&self) -> bool {
-        self.is_alive
+        self.is_paused
     }
 }
