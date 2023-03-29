@@ -68,7 +68,7 @@ impl Notification {
         notification_type: NotificationType,
         title: impl Into<String>,
         text: impl Into<String>,
-        full_lifetime: Duration,
+        lifetime: Duration,
     ) -> Self {
         Self {
             id: Uuid::new_v4(),
@@ -77,8 +77,8 @@ impl Notification {
             text: text.into(),
 
             spawn_time: OffsetDateTime::now_local().expect("Can not acquire local current time"),
-            lifetime: Self::NOTIFICATION_LIFETIME,
-            full_lifetime,
+            lifetime,
+            full_lifetime: lifetime,
             paused: false,
         }
     }
