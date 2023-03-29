@@ -21,17 +21,21 @@ pub enum NotificationType {
 
     /// Represents some error message.
     Error,
+
+    /// Custom notification type.
+    ///
+    /// You can use this option when you want to set the custom style of your notification
+    /// but don't want to write an entire custom component from scratch.
+    Custom(Classes),
 }
 
-impl TryFrom<&str> for NotificationType {
-    type Error = String;
-
-    fn try_from(data: &str) -> Result<Self, <NotificationType as TryFrom<&str>>::Error> {
+impl From<&str> for NotificationType {
+    fn from(data: &str) -> Self {
         match data {
-            "info" => Ok(Self::Info),
-            "warn" => Ok(Self::Warn),
-            "error" => Ok(Self::Error),
-            invalid_type => Err(invalid_type.to_owned()),
+            "info" => Self::Info,
+            "warn" => Self::Warn,
+            "error" => Self::Error,
+            data => Self::Custom(data.to_owned().into()),
         }
     }
 }
@@ -42,6 +46,7 @@ impl From<&NotificationType> for Classes {
             NotificationType::Info => classes!("info"),
             NotificationType::Warn => classes!("warn"),
             NotificationType::Error => classes!("error"),
+            NotificationType::Custom(classes) => classes.clone(),
         }
     }
 }
