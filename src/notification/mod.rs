@@ -56,14 +56,20 @@ pub struct Notification {
 
     pub(crate) spawn_time: OffsetDateTime,
     pub(crate) lifetime: Duration,
+    pub(crate) full_lifetime: Duration,
     pub(crate) paused: bool,
 }
 
 impl Notification {
     pub const NOTIFICATION_LIFETIME: Duration = Duration::seconds(3);
 
-    /// Creates a new standard notification from notification type, title, and text.
-    pub fn new(notification_type: NotificationType, title: impl Into<String>, text: impl Into<String>) -> Self {
+    /// Creates a new standard notification from notification type, title, text, and lifetime duration.
+    pub fn new(
+        notification_type: NotificationType,
+        title: impl Into<String>,
+        text: impl Into<String>,
+        full_lifetime: Duration,
+    ) -> Self {
         Self {
             id: Uuid::new_v4(),
             notification_type,
@@ -72,11 +78,14 @@ impl Notification {
 
             spawn_time: OffsetDateTime::now_local().expect("Can not acquire local current time"),
             lifetime: Self::NOTIFICATION_LIFETIME,
+            full_lifetime,
             paused: false,
         }
     }
 
-    /// Creates a new standard notification from notification type and text. Title will be omitted.
+    /// Creates a new standard notification from notification type and text.
+    ///
+    /// Title will be omitted. Notification lifetime is equal to the [`Self::NOTIFICATION_LIFETIME`].
     pub fn from_description_and_type(notification_type: NotificationType, text: impl Into<String>) -> Self {
         Self {
             id: Uuid::new_v4(),
@@ -86,6 +95,7 @@ impl Notification {
 
             spawn_time: OffsetDateTime::now_local().expect("Can not acquire local current time"),
             lifetime: Self::NOTIFICATION_LIFETIME,
+            full_lifetime: Self::NOTIFICATION_LIFETIME,
             paused: false,
         }
     }
@@ -100,6 +110,7 @@ impl Notification {
 
             spawn_time,
             lifetime,
+            full_lifetime,
             paused,
         } = self;
 
@@ -111,6 +122,7 @@ impl Notification {
 
             spawn_time,
             lifetime,
+            full_lifetime,
             paused,
         }
     }
@@ -125,6 +137,7 @@ impl Notification {
 
             spawn_time,
             lifetime,
+            full_lifetime,
             paused,
         } = self;
 
@@ -136,6 +149,7 @@ impl Notification {
 
             spawn_time,
             lifetime,
+            full_lifetime,
             paused,
         }
     }
@@ -150,6 +164,7 @@ impl Notification {
 
             spawn_time,
             lifetime,
+            full_lifetime,
             paused,
         } = self;
 
@@ -161,6 +176,36 @@ impl Notification {
 
             spawn_time,
             lifetime,
+            full_lifetime,
+            paused,
+        }
+    }
+
+    /// Resets notification lifetime.
+    ///
+    /// It means that after this method invocation, the lifetime of the notification will be equal to the start value.
+    pub fn reset_lifetime(self) -> Self {
+        let Notification {
+            id,
+            notification_type,
+            title,
+            text,
+
+            spawn_time,
+            lifetime: _,
+            full_lifetime,
+            paused,
+        } = self;
+
+        Self {
+            id,
+            notification_type,
+            title,
+            text,
+
+            spawn_time,
+            lifetime: full_lifetime,
+            full_lifetime,
             paused,
         }
     }
@@ -185,7 +230,7 @@ impl Notifiable for Notification {
 
     fn mouse_out(&mut self) {
         self.paused = false;
-        self.lifetime = Self::NOTIFICATION_LIFETIME;
+        self.lifetime = self.full_lifetime;
     }
 
     fn is_paused(&self) -> bool {
