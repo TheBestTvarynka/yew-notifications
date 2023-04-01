@@ -9,20 +9,20 @@ use crate::Notifiable;
 
 /// Returned object from the `use_notification` hook. Can spawn new notifications.
 #[derive(Clone, PartialEq)]
-pub struct NotificationsManager<T: Notifiable + PartialEq + Clone> {
-    pub(crate) sender: Option<UseReducerDispatcher<NotificationsList<T>>>,
+pub struct NotificationsManager<N: Notifiable + PartialEq + Clone> {
+    pub(crate) sender: Option<UseReducerDispatcher<NotificationsList<N>>>,
 }
 
-impl<T: Notifiable + PartialEq + Clone> NotificationsManager<T> {
-    /// Spawns new notification of the type T.
-    pub fn spawn(&self, notification: T) {
+impl<N: Notifiable + PartialEq + Clone> NotificationsManager<N> {
+    /// Spawns new notification of the type N.
+    pub fn spawn(&self, notification: N) {
         if let Some(sender) = &self.sender {
             sender.dispatch(Action::New(notification));
         }
     }
 }
 
-impl<T: Notifiable + PartialEq + Clone> Default for NotificationsManager<T> {
+impl<N: Notifiable + PartialEq + Clone> Default for NotificationsManager<N> {
     fn default() -> Self {
         Self {
             sender: Default::default(),
@@ -31,8 +31,8 @@ impl<T: Notifiable + PartialEq + Clone> Default for NotificationsManager<T> {
 }
 
 #[derive(Debug)]
-pub enum Action<T: Notifiable + PartialEq + Clone> {
-    New(T),
+pub enum Action<N: Notifiable + PartialEq + Clone> {
+    New(N),
     Close(Uuid),
     Tick,
     Pause(Uuid),
@@ -40,11 +40,11 @@ pub enum Action<T: Notifiable + PartialEq + Clone> {
 }
 
 #[derive(Debug, Clone, PartialEq)]
-pub struct NotificationsList<T: Notifiable + PartialEq + Clone> {
-    pub notifications: Vec<T>,
+pub struct NotificationsList<N> {
+    pub notifications: Vec<N>,
 }
 
-impl<T: Notifiable + PartialEq + Clone> Default for NotificationsList<T> {
+impl<N> Default for NotificationsList<N> {
     fn default() -> Self {
         Self {
             notifications: Default::default(),
@@ -52,7 +52,7 @@ impl<T: Notifiable + PartialEq + Clone> Default for NotificationsList<T> {
     }
 }
 
-impl<T: Notifiable + PartialEq + Clone> NotificationsList<T> {
+impl<N> NotificationsList<N> {
     pub const TIME_TICK_MILLIS: usize = 1000; // every second
     pub const TIME_TICK_DURATION: Duration = Duration::seconds(1);
 
@@ -61,8 +61,8 @@ impl<T: Notifiable + PartialEq + Clone> NotificationsList<T> {
     }
 }
 
-impl<T: Notifiable + PartialEq + Clone> Reducible for NotificationsList<T> {
-    type Action = Action<T>;
+impl<N: Notifiable + PartialEq + Clone> Reducible for NotificationsList<N> {
+    type Action = Action<N>;
 
     fn reduce(self: Rc<Self>, action: Self::Action) -> Rc<Self> {
         match action {

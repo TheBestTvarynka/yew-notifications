@@ -49,7 +49,7 @@ impl From<&str> for NotificationsPosition {
 
 /// Props for [`NotificationsProvider`]
 #[derive(Properties, PartialEq, Clone)]
-pub struct NotificationsProviderProps<T: Notifiable + PartialEq, F: NotifiableComponentFactory<T> + PartialEq + Clone> {
+pub struct NotificationsProviderProps<N: Notifiable + PartialEq, F: NotifiableComponentFactory<N> + PartialEq + Clone> {
     /// Inner provider components
     pub children: Children,
     /// Instance of the component factory
@@ -60,13 +60,13 @@ pub struct NotificationsProviderProps<T: Notifiable + PartialEq, F: NotifiableCo
     #[prop_or(NotificationsPosition::BottomRight)]
     pub position: NotificationsPosition,
     #[prop_or_default]
-    pub _notification: PhantomData<T>,
+    pub _notification: PhantomData<N>,
 }
 
 /// The notification provider component.
 ///
 /// Every child (direct or indirect) of this component can use `use_notification` hook to spawn new notifications.
-/// `T` - type of the notification.
+/// `N` - type of the notification.
 /// `F` - notification factory type.
 ///
 /// # Example
@@ -82,12 +82,12 @@ pub struct NotificationsProviderProps<T: Notifiable + PartialEq, F: NotifiableCo
 /// ```
 #[function_component(NotificationsProvider)]
 pub fn notifications_provider<
-    T: Notifiable + PartialEq + Clone,
-    F: NotifiableComponentFactory<T> + PartialEq + Clone,
+    N: Notifiable + PartialEq + Clone,
+    F: NotifiableComponentFactory<N> + PartialEq + Clone,
 >(
-    props: &NotificationsProviderProps<T, F>,
+    props: &NotificationsProviderProps<N, F>,
 ) -> Html {
-    let notifications = use_reducer_eq(NotificationsList::<T>::default);
+    let notifications = use_reducer_eq(NotificationsList::<N>::default);
 
     let manager = NotificationsManager {
         sender: Some(notifications.dispatcher()),
@@ -100,7 +100,7 @@ pub fn notifications_provider<
             let sender = sender.clone();
             let is_active = *is_active;
 
-            let interval = Interval::new(NotificationsList::<T>::TIME_TICK_MILLIS as u32, move || {
+            let interval = Interval::new(NotificationsList::<N>::TIME_TICK_MILLIS as u32, move || {
                 if is_active {
                     sender.dispatch(Action::Tick);
                 }
@@ -120,7 +120,7 @@ pub fn notifications_provider<
     let classes = vec![classes!("notifications"), (&props.position).into()];
 
     html! {
-        <ContextProvider<NotificationsManager<T>> context={manager}>
+        <ContextProvider<NotificationsManager<N>> context={manager}>
             {children}
             <div class={classes}>
                 {for ns.iter().map(|n| {
@@ -151,6 +151,6 @@ pub fn notifications_provider<
                     notification_creator.component(notification, onclick, onenter, onleave)
                 })}
             </div>
-        </ContextProvider<NotificationsManager<T>>>
+        </ContextProvider<NotificationsManager<N>>>
     }
 }

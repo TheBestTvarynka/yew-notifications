@@ -87,7 +87,7 @@ jobs:
         credentials_json: '${{ secrets.GCP_SERVICE_KEY }}'
 
     - name: 'Build documentation'
-      run: 'mkdir doc && cargo doc --release --target-dir doc --all-features -p yew-notifications --no-deps'
+      run: 'mkdir doc && cargo doc --release --target-dir doc --all-features -p yew-notifications --no-deps --color always'
 
     - name: 'Set up Cloud SDK'
       uses: google-github-actions/setup-gcloud@v0
