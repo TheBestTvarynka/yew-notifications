@@ -14,7 +14,7 @@ Notifications components library for [Yew](https://yew.rs/). It's like [react-to
 
 Documentation: https://yn-docs.qkation.com/yew_notifications/index.htmlhttps://yn-docs.qkation.com/
 
-#[](/static/screenshots/basic_example.gif)
+![](/static/screenshots/basic_example.gif)
 
 <sub>[demo](https://yn-docs.qkation.com/examples/basic/index.html)</sub>
 
