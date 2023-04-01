@@ -12,9 +12,9 @@ Notifications components library for [Yew](https://yew.rs/). It's like [react-to
 
 ![deploy](https://github.com/TheBestTvarynka/yew-notifications/actions/workflows/github-actions.yml/badge.svg)
 
-Documentation: https://yn-docs.qkation.com/yew_notifications/index.htmlhttps://yn-docs.qkation.com/
+Documentation: https://yn-docs.qkation.com/yew_notifications/index.html
 
-#[](/static/screenshots/basic_example.gif)
+![](/static/screenshots/basic_example.gif)
 
 <sub>[demo](https://yn-docs.qkation.com/examples/basic/index.html)</sub>
 
