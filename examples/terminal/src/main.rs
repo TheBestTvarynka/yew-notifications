@@ -2,7 +2,7 @@ mod notification;
 
 use web_sys::HtmlInputElement;
 use yew::{function_component, html, use_state, Callback, Html, TargetCast};
-use yew_notifications::{use_notification, NotificationsProvider, NotificationsPosition};
+use yew_notifications::{use_notification, NotificationsPosition, NotificationsProvider};
 
 use crate::notification::factory::TerminalNotificationFactory;
 use crate::notification::TerminalNotification;

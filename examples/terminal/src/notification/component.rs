@@ -1,8 +1,7 @@
 use yew::{classes, function_component, html, Callback, Html, MouseEvent, Properties};
 
-use crate::notification::utils::format_time;
-
 use super::TerminalNotification;
+use crate::notification::utils::format_time;
 
 #[derive(Properties, Clone, PartialEq)]
 pub struct TerminalNotificationComponentProps {

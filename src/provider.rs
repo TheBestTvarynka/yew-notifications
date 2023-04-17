@@ -20,6 +20,9 @@ pub enum NotificationsPosition {
     /// Spawned notifications will be places at the bottom left corner of the screen
     BottomLeft,
     /// Can be used to specify custom css class for the notifications container
+    ///
+    /// # Note
+    /// The Custom class will overwrite any default provider CSS including style, position, etc.
     Custom(Classes),
 }
 

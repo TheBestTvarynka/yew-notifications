@@ -18,7 +18,11 @@ Documentation: https://yn-docs.qkation.com/yew_notifications/index.html
 
 ![](/static/screenshots/basic_example.gif)
 
-<sub>[demo](https://yn-docs.qkation.com/examples/basic/index.html)</sub>
+<sub>[:arrow_up: demo site](https://yn-docs.qkation.com/examples/basic/index.html)</sub>
+
+![](/static/screenshots/terminal_example.gif)
+
+<sub>[:arrow_up: demo site](https://yn-docs.qkation.com/examples/terminal/index.html)</sub>
 
 Where it already used?
 

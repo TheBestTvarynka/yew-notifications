@@ -7,20 +7,21 @@ Demo: https://yn-docs.qkation.com/examples/terminal/index.html
 
 `yew-notifications` has all the needed notification structure and a notification component. But sometimes we need altogether custom notifications, for example, with another style, behaviour, etc. This crate shows how to write custom notifications.
 
-This terminal notifications have:
-
+* Fully custom notification and provider style.
+* Notification lifetime dots.
 
 ### How to write custom notifications
 
-1. Create notification structure (it'll contain all needed notification data like title, text, etc, maybe logo) and implement the `Notifiable` trait. For example, `CustomNotification`.
-2. Create a yew component that will represent one separate notification. For example, `CustomNotificationComponent`.
-3. Create a notification factory structure (it'll generate yew component for every newly spawned notification) and implement the `NotifiableComponentFactory` trait. For example, `CustomNotificationFactory`.
+1. Create notification structure (it'll contain all needed notification data like title, text, etc, maybe logo) and implement the `Notifiable` trait. For example, `TerminalNotification`.
+2. Create a yew component that will represent one separate notification. For example, `TerminalNotificationComponent`.
+3. Create a notification factory structure (it'll generate yew component for every newly spawned notification) and implement the `NotifiableComponentFactory` trait. For example, `TerminalNotificationFactory`.
 4. Specify your new types in the `NotificationProvider` component:
 ```Rust
-// component_creator is an instance of the CustomNotificationFactory
-<NotificationsProvider<CustomNotification, CustomNotificationFactory> {component_creator}>
+// component_creator is an instance of the TerminalNotificationFactory
+// position is an instance of the NotificationsPosition enum
+<NotificationsProvider<TerminalNotification, TerminalNotificationFactory> {component_creator} {position}>
     // some inner components
-</NotificationsProvider<CustomNotification, CustomNotificationFactory>>
+</NotificationsProvider<TerminalNotification, TerminalNotificationFactory>>
 ```
 
 ### How to run this demo:
