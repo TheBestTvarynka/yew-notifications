@@ -1,0 +1,19 @@
+[package]
+name = "custom-example"
+description = "Simple web app that shows how to use custom notifications"
+version = "0.1.0"
+edition = "2021"
+authors = ["Pavlo Myroniuk <the.best.tvarynka@gmail.com>"]
+
+[dependencies]
+yew = { version = "0.20", features = ["csr"] }
+yew-notifications = { path = "../../" }
+web-sys = "0.3.61"
+
+# utils
+uuid = { version = "1.3.0", features = ["v4", "js"] }
+time = { version = "0.3.20", features = ["wasm-bindgen"] }
+
+# logging
+wasm-logger = "0.2.0"
+log = "0.4.17"
