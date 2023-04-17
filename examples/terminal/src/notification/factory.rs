@@ -1,22 +1,22 @@
 use yew::{html, Callback, Html, MouseEvent};
 use yew_notifications::NotifiableComponentFactory;
 
-use super::CustomNotification;
-use crate::notification::component::CustomNotificationComponent;
+use super::TerminalNotification;
+use crate::notification::component::TerminalNotificationComponent;
 
 #[derive(Clone, PartialEq, Default)]
-pub struct CustomNotificationFactory;
+pub struct TerminalNotificationFactory;
 
-impl NotifiableComponentFactory<CustomNotification> for CustomNotificationFactory {
+impl NotifiableComponentFactory<TerminalNotification> for TerminalNotificationFactory {
     fn component(
         &self,
-        notification: CustomNotification,
+        notification: TerminalNotification,
         onclick: Callback<MouseEvent>,
         onenter: Callback<MouseEvent>,
         onleave: Callback<MouseEvent>,
     ) -> Html {
         html! {
-            <CustomNotificationComponent {notification} {onclick} {onenter} {onleave} />
+            <TerminalNotificationComponent {notification} {onclick} {onenter} {onleave} />
         }
     }
 }

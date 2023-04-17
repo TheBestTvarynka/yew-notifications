@@ -23,15 +23,16 @@ pub enum NotificationsPosition {
     Custom(Classes),
 }
 
-impl From<&NotificationsPosition> for Classes {
+impl From<&NotificationsPosition> for Vec<Classes> {
     fn from(position: &NotificationsPosition) -> Self {
-        match position {
+        let position = match position {
             NotificationsPosition::TopLeft => classes!("notifications-provider-top-left"),
             NotificationsPosition::TopRight => classes!("notifications-provider-top-right"),
             NotificationsPosition::BottomRight => classes!("notifications-provider-bottom-right"),
             NotificationsPosition::BottomLeft => classes!("notifications-provider-bottom-left"),
-            NotificationsPosition::Custom(classes) => classes.clone(),
-        }
+            NotificationsPosition::Custom(classes) => return vec![classes.clone()],
+        };
+        vec![classes!("notifications"), position]
     }
 }
 
@@ -117,7 +118,7 @@ pub fn notifications_provider<
 
     let notification_creator = &props.component_creator;
 
-    let classes = vec![classes!("notifications"), (&props.position).into()];
+    let classes: Vec<Classes> = (&props.position).into();
 
     html! {
         <ContextProvider<NotificationsManager<N>> context={manager}>

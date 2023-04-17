@@ -1,11 +1,98 @@
 
-.custom-notification {
-    border-radius: 1em;
-    background-color: azure;
-    border: 2px solid transparent;
-    padding: 1em;
+/* page styling */
+
+body {
+    background-color: #282c34;
 }
 
-.custom-notification:hover {
-    border: 2px solid chocolate;
+input {
+    font-family: 'JetBrains Mono', monospace;
+    background: #2f323b;
+    padding: 0.2em;
+    border-radius: 3px;
+    margin: 0;
+    width: calc(100% - 0.4em - 6px);
+    color: aliceblue;
+    border: 3px solid #21252b;
+    font-size: 0.9em;
+    resize: vertical;
+    transition: all 0.2s;
+}
+
+input:focus {
+    border-bottom: 3px solid aliceblue;
+    outline: none;
+}
+
+button {
+    color: aliceblue;
+    background-color: #21252b;
+    padding: 0.2em 0.4em 0.2em 0.4em;
+    border-radius: 0.3em;
+    font-family: 'JetBrains Mono', monospace;
+    border: 1px solid transparent;
+    transition: 0.3s;
+}
+
+button:hover {
+    cursor: pointer;
+    transition: 0.3s;
+    color: #21252b;
+    background-color: aliceblue;
+}
+
+/* notifications components styling */
+
+.terminal-notification {
+    border-radius: 0.2em;
+    padding: 0.2em;
+    display: flex;
+    flex-direction: row;
+    gap: 0.3em;
+}
+
+.terminal-notification:hover {
+    background-color: #2f323b;
+    cursor: pointer;
+}
+
+.terminal-notification .time {
+    color: #738bc2;
+}
+
+.terminal-notification .title {
+    color: #c17bdb;
+}
+
+.terminal-notification .text {
+    color: #98c176;
+    word-wrap: anywhere;
+}
+
+.terminal-notification .dots {
+    color: #de6a70;
+    font-weight: bold;
+    word-wrap: anywhere;
+}
+
+.terminal-notifications {
+    width: 30%;
+    position: fixed;
+    right: 2em;
+    bottom: 2em;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+
+    font-family: 'JetBrains Mono', monospace;
+    src: url("https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Source+Code+Pro:wght@300&display=swap");
+
+    padding: 0.5em;
+    background-color: #21252b;
+    border: 1px solid aliceblue;
+}
+
+.terminal-notifications:empty {
+    display: none;
 }

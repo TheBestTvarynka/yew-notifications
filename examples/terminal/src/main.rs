@@ -2,14 +2,23 @@ mod notification;
 
 use web_sys::HtmlInputElement;
 use yew::{function_component, html, use_state, Callback, Html, TargetCast};
-use yew_notifications::{use_notification, NotificationsProvider};
+use yew_notifications::{use_notification, NotificationsProvider, NotificationsPosition};
 
-use crate::notification::factory::CustomNotificationFactory;
-use crate::notification::CustomNotification;
+use crate::notification::factory::TerminalNotificationFactory;
+use crate::notification::TerminalNotification;
 
 #[function_component(Inner)]
 fn inner() -> Html {
-    let text = use_state(String::new);
+    let title = use_state(|| String::from("title"));
+    let title_setter = title.setter();
+    let on_title_input = Callback::from(move |event: html::oninput::Event| {
+        let input: HtmlInputElement = event.target_unchecked_into();
+        let value = input.value();
+
+        title_setter.set(value);
+    });
+
+    let text = use_state(|| String::from("text"));
     let text_setter = text.setter();
     let on_text_input = Callback::from(move |event: html::oninput::Event| {
         let input: HtmlInputElement = event.target_unchecked_into();
@@ -18,14 +27,16 @@ fn inner() -> Html {
         text_setter.set(value);
     });
 
-    let notifications_manager = use_notification::<CustomNotification>();
+    let notifications_manager = use_notification::<TerminalNotification>();
+    let title_value = (*title).clone();
     let text_value = (*text).clone();
     let onclick = Callback::from(move |_| {
-        notifications_manager.spawn(CustomNotification::new(text_value.clone()));
+        notifications_manager.spawn(TerminalNotification::new(title_value.clone(), text_value.clone()));
     });
 
     html! {
         <div style="display:flex;flex-direction:column;gap:1em;width:30em">
+            <input placeholder={"title"} oninput={on_title_input} />
             <input placeholder={"text"} oninput={on_text_input} />
             <button {onclick}>{"spawn"}</button>
         </div>
@@ -34,13 +45,15 @@ fn inner() -> Html {
 
 #[function_component(App)]
 pub fn app() -> Html {
-    let component_creator = CustomNotificationFactory::default();
+    let component_creator = TerminalNotificationFactory::default();
+    let position = NotificationsPosition::Custom("terminal-notifications".into());
 
     html! {
         <div>
-            <NotificationsProvider<CustomNotification, CustomNotificationFactory> {component_creator}>
+            <NotificationsProvider<TerminalNotification, TerminalNotificationFactory> {component_creator} {position}>
                 <Inner />
-            </NotificationsProvider<CustomNotification, CustomNotificationFactory>>
+                <div style="height: 200vh"></div>
+            </NotificationsProvider<TerminalNotification, TerminalNotificationFactory>>
         </div>
     }
 }
