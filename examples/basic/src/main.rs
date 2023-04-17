@@ -107,6 +107,7 @@ pub fn app() -> Html {
             <NotificationsProvider<Notification, NotificationFactory> {component_creator} position={position_value}>
                 <Inner position_setter={move |position| position_setter.set(position)} />
             </NotificationsProvider<Notification, NotificationFactory>>
+            <div style="height: 150vh"></div>
         </div>
     }
 }
