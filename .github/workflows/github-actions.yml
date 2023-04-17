@@ -27,10 +27,12 @@ jobs:
     - name: 'Clippy'
       run: 'cargo clippy --all-features -- -D warnings'
 
-  check-basic-example:
-    name: Check basic example code
+  check-examples-matrix:
+    strategy:
+      matrix:
+        example: [basic, custom, terminal]
     runs-on: ubuntu-latest
-
+    name: Check ${{ matrix.example }} code
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -42,50 +44,10 @@ jobs:
       run: 'rustup component add rustfmt --toolchain nightly-x86_64-unknown-linux-gnu'
 
     - name: 'Fmt'
-      run: 'cd examples/basic && cargo +nightly fmt --all -- --check'
+      run: 'cd examples/${{ matrix.example }} && cargo +nightly fmt --all -- --check'
 
     - name: 'Clippy'
-      run: 'cd examples/basic && cargo clippy -- -D warnings'
-
-  check-custom-example:
-    name: Check custom example code
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-
-    - name: 'Add nightly channel'
-      run: 'rustup toolchain install nightly'
-
-    - name: 'Add nightly fmt'
-      run: 'rustup component add rustfmt --toolchain nightly-x86_64-unknown-linux-gnu'
-
-    - name: 'Fmt'
-      run: 'cd examples/custom && cargo +nightly fmt --all -- --check'
-
-    - name: 'Clippy'
-      run: 'cd examples/custom && cargo clippy -- -D warnings'
-
-  check-terminal-example:
-    name: Check terminal example code
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-
-    - name: 'Add nightly channel'
-      run: 'rustup toolchain install nightly'
-
-    - name: 'Add nightly fmt'
-      run: 'rustup component add rustfmt --toolchain nightly-x86_64-unknown-linux-gnu'
-
-    - name: 'Fmt'
-      run: 'cd examples/terminal && cargo +nightly fmt --all -- --check'
-
-    - name: 'Clippy'
-      run: 'cd examples/terminal && cargo clippy -- -D warnings'
+      run: 'cd examples/${{ matrix.example }} && cargo clippy -- -D warnings'
 
   deploy-documentation:
     name: Deploy documentation
