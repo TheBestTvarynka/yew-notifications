@@ -1,8 +1,8 @@
 use std::marker::PhantomData;
 
 use yew::{
-    classes, function_component, html, use_effect_with, use_reducer_eq, Callback, Children, Classes,
-    ContextProvider, Html, Properties,
+    classes, function_component, html, use_effect_with, use_reducer_eq, Callback, Children, Classes, ContextProvider,
+    Html, Properties,
 };
 
 use crate::manager::{Action, NotificationsList};
