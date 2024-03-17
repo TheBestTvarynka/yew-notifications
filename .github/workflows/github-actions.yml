@@ -25,7 +25,7 @@ jobs:
       run: 'cargo +nightly fmt --all -- --check'
 
     - name: 'Clippy'
-      run: 'cargo clippy --all-features -- -D warnings'
+      run: 'cargo clippy --all-features --all-targets -- -D warnings'
 
   check-examples-matrix:
     strategy:
@@ -47,7 +47,7 @@ jobs:
       run: 'cd examples/${{ matrix.example }} && cargo +nightly fmt --all -- --check'
 
     - name: 'Clippy'
-      run: 'cd examples/${{ matrix.example }} && cargo clippy -- -D warnings'
+      run: 'cd examples/${{ matrix.example }} && cargo clippy --all-targets --all-features -- -D warnings'
 
   deploy-documentation:
     name: Deploy documentation
