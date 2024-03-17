@@ -24,10 +24,7 @@ fn inner(props: &InnerProps) -> Html {
     let notification_type_setter = notification_type.setter();
     let on_type_change = Callback::from(move |event: Event| {
         let input: HtmlInputElement = event.target_unchecked_into();
-
-        if let Ok(algorithm) = input.value().as_str().try_into() {
-            notification_type_setter.set(algorithm);
-        }
+        notification_type_setter.set(input.value().as_str().into());
     });
 
     let title = use_state(String::new);
