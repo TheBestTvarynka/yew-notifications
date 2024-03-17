@@ -97,7 +97,7 @@ fn inner(props: &InnerProps) -> Html {
 
 #[function_component(App)]
 pub fn app() -> Html {
-    let component_creator = NotificationFactory::default();
+    let component_creator = NotificationFactory;
     let position = use_state(|| NotificationsPosition::TopRight);
     let position_setter = position.setter();
 

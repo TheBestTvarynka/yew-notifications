@@ -34,7 +34,7 @@ fn inner() -> Html {
 
 #[function_component(App)]
 pub fn app() -> Html {
-    let component_creator = CustomNotificationFactory::default();
+    let component_creator = CustomNotificationFactory;
 
     html! {
         <div>

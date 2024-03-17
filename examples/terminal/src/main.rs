@@ -45,7 +45,7 @@ fn inner() -> Html {
 
 #[function_component(App)]
 pub fn app() -> Html {
-    let component_creator = TerminalNotificationFactory::default();
+    let component_creator = TerminalNotificationFactory;
     let position = NotificationsPosition::Custom("terminal-notifications".into());
 
     html! {

@@ -222,7 +222,7 @@ impl Notifiable for Notification {
     }
 
     fn apply_tick(&mut self, time: Duration) {
-        self.lifetime = self.lifetime.checked_sub(time).unwrap_or(Duration::default());
+        self.lifetime = self.lifetime.checked_sub(time).unwrap_or_default();
     }
 
     fn is_alive(&self) -> bool {
