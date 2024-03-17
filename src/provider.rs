@@ -11,13 +11,13 @@ use crate::{Notifiable, NotifiableComponentFactory, NotificationsManager};
 /// Notifications position on the screen
 #[derive(Debug, Clone, PartialEq)]
 pub enum NotificationsPosition {
-    /// Spawned notifications will be places at the top left corner of the screen
+    /// Spawned notifications will be places in the top left corner of the screen
     TopLeft,
-    /// Spawned notifications will be places at the top right corner of the screen
+    /// Spawned notifications will be places in the top right corner of the screen
     TopRight,
-    /// Spawned notifications will be places at the bottom right corner of the screen
+    /// Spawned notifications will be places in the bottom right corner of the screen
     BottomRight,
-    /// Spawned notifications will be places at the bottom left corner of the screen
+    /// Spawned notifications will be places in the bottom left corner of the screen
     BottomLeft,
     /// Can be used to specify custom css class for the notifications container
     ///

@@ -6,13 +6,13 @@ edition = "2021"
 authors = ["Pavlo Myroniuk <the.best.tvarynka@gmail.com>"]
 
 [dependencies]
-yew = { version = "0.20", features = ["csr"] }
+yew = { version = "0.21", features = ["csr"] }
 yew-notifications = { path = "../../", features = ["standard-notification"] }
-web-sys = "0.3.61"
+web-sys = "0.3"
 
 # logging
-wasm-logger = "0.2.0"
-log = "0.4.17"
+wasm-logger = "0.2"
+log = "0.4"
 
 # utils
-time = { version = "0.3.20", features = ["local-offset", "wasm-bindgen"] }
+time = { version = "0.3", features = ["local-offset", "wasm-bindgen"] }
