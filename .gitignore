@@ -4,3 +4,4 @@ Cargo.lock
 dist/
 target/
 doc/
+.idea/
