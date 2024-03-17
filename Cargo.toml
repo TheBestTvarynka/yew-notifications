@@ -12,12 +12,12 @@ repository = "https://github.com/TheBestTvarynka/yew-notifications"
 standard-notification = []
 
 [dependencies]
-yew = { version = "0.20", default-features = false }
-gloo = "0.8.0"
+yew = { version = "0.21", default-features = false }
+gloo = "0.11"
 
 # logging
-log = "0.4.17"
+log = "0.4"
 
 # utils
-time = { version = "0.3.20", features = ["local-offset", "wasm-bindgen"] }
-uuid = { version = "1.2.1", features = ["v4", "js"] }
+time = { version = "0.3", features = ["local-offset", "wasm-bindgen"] }
+uuid = { version = "1.7", features = ["v4", "js"] }

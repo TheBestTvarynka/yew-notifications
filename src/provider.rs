@@ -1,8 +1,8 @@
 use std::marker::PhantomData;
 
 use yew::{
-    classes, function_component, html, use_effect_with_deps, use_reducer_eq, Callback, Children, Classes,
-    ContextProvider, Html, Properties,
+    classes, function_component, html, use_effect_with, use_reducer_eq, Callback, Children, Classes, ContextProvider,
+    Html, Properties,
 };
 
 use crate::manager::{Action, NotificationsList};
@@ -11,13 +11,13 @@ use crate::{Notifiable, NotifiableComponentFactory, NotificationsManager};
 /// Notifications position on the screen
 #[derive(Debug, Clone, PartialEq)]
 pub enum NotificationsPosition {
-    /// Spawned notifications will be places at the top left corner of the screen
+    /// Spawned notifications will be places in the top left corner of the screen
     TopLeft,
-    /// Spawned notifications will be places at the top right corner of the screen
+    /// Spawned notifications will be places in the top right corner of the screen
     TopRight,
-    /// Spawned notifications will be places at the bottom right corner of the screen
+    /// Spawned notifications will be places in the bottom right corner of the screen
     BottomRight,
-    /// Spawned notifications will be places at the bottom left corner of the screen
+    /// Spawned notifications will be places in the bottom left corner of the screen
     BottomLeft,
     /// Can be used to specify custom css class for the notifications container
     ///
@@ -97,7 +97,8 @@ pub fn notifications_provider<
         sender: Some(notifications.dispatcher()),
     };
 
-    use_effect_with_deps(
+    use_effect_with(
+        (!notifications.is_empty(), notifications.dispatcher()),
         |(is_active, sender)| {
             use gloo::timers::callback::Interval;
 
@@ -112,7 +113,6 @@ pub fn notifications_provider<
 
             move || drop(interval)
         },
-        (!notifications.is_empty(), notifications.dispatcher()),
     );
 
     let ns = notifications.notifications.clone();
