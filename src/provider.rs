@@ -8,6 +8,9 @@ use yew::{
 use crate::manager::{Action, NotificationsList};
 use crate::{Notifiable, NotifiableComponentFactory, NotificationsManager};
 
+const NOTIFICATION_PROVIDER_STYLE: &str = include_str!("../static/notifications_provider.scss");
+const NOTIFICATION_STYLE: &str = include_str!("../static/notification.scss");
+
 /// Notifications position on the screen
 #[derive(Debug, Clone, PartialEq)]
 pub enum NotificationsPosition {
@@ -126,6 +129,13 @@ pub fn notifications_provider<
     html! {
         <ContextProvider<NotificationsManager<N>> context={manager}>
             {children}
+            <style>
+                {NOTIFICATION_PROVIDER_STYLE}
+                {
+                    #[cfg(feature = "standard-notification")]
+                    { NOTIFICATION_STYLE }
+                }
+            </style>
             <div class={classes}>
                 {for ns.iter().map(|n| {
                     let notification = n.clone();

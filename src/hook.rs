@@ -15,6 +15,9 @@ use crate::Notifiable;
 /// notifications_manager.spawn(Notification::new(/* */));
 /// ```
 #[hook]
-pub fn use_notification<T: Notifiable + PartialEq + Clone>() -> NotificationsManager<T> {
+pub fn use_notification<T>() -> NotificationsManager<T>
+where
+    T: Notifiable + PartialEq + Clone,
+{
     use_context::<NotificationsManager<T>>().unwrap_or_default()
 }
