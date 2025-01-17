@@ -64,7 +64,7 @@ jobs:
 
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v0'
+      uses: 'google-github-actions/auth@v2'
       with:
         credentials_json: '${{ secrets.GCP_SERVICE_KEY }}'
 
@@ -72,7 +72,7 @@ jobs:
       run: 'mkdir doc && cargo doc --release --target-dir doc --all-features -p yew-notifications --no-deps --color always'
 
     - name: 'Set up Cloud SDK'
-      uses: google-github-actions/setup-gcloud@v0
+      uses: google-github-actions/setup-gcloud@v2
 
     - name: 'Deploy documentation'
       run: 'gsutil -h "Cache-Control:no-store" -m cp -r doc/doc/* gs://${GCP_BUCKET}'
@@ -98,7 +98,7 @@ jobs:
 
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v0'
+      uses: 'google-github-actions/auth@v2'
       with:
         credentials_json: '${{ secrets.GCP_SERVICE_KEY }}'
 
@@ -109,7 +109,7 @@ jobs:
       run: 'cd examples/${{ matrix.example }} && trunk build --release --public-url /examples/${{ matrix.example }}'
 
     - name: 'Set up Cloud SDK'
-      uses: google-github-actions/setup-gcloud@v0
+      uses: google-github-actions/setup-gcloud@v2
 
     - name: 'Deploy documentation'
       run: 'gsutil -h "Cache-Control:no-store" -m cp -r examples/${{ matrix.example }}/dist/* gs://${GCP_BUCKET}/examples/${{ matrix.example }}'
